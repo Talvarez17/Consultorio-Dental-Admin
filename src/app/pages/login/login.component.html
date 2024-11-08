@@ -1,0 +1,30 @@
+<div class="bg-gray-300 flex justify-center items-center h-screen">
+
+    <div class="w-1/2 h-screen hidden lg:block">
+        <img src="../../../assets/fondol.png" class="object-cover w-full h-full">
+    </div>
+
+    <div class="md:p-20 sm:p-10 p-8 w-full lg:w-1/2">
+        <h1 class="text-2xl font-semibold mb-3 text-black text-center">Inicio de sesión</h1>
+
+        <div class="mb-3">
+            <img src="../../../assets/logosf.png" class="mx-auto block" height="150" width="150">
+        </div>
+
+        <form>
+            <div class="mb-3 text-center">
+                <label class="block text-black">Correo</label>
+                <input type="text" class="w-full rounded py-2 px-3 focus:outline-none focus:border-teal-600">
+            </div>
+
+            <div class="mb-3 text-center">
+                <label class="block text-black">Contraseña</label>
+                <input type="password" class="w-full rounded py-2 px-3 focus:outline-none focus:border-teal-600">
+            </div>
+
+            <button type="button"
+                class="bg-teal-500 text-white rounded hover:bg-teal-300 hover:border-teal-300 py-2 px-4 w-full" (click)="login()">Ingresar
+            </button>
+        </form>
+    </div>
+</div>
