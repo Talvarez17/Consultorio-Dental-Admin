@@ -8,6 +8,9 @@ import { PacientesComponent } from './pages/auth/pacientes/pacientes.component';
 import { CitasComponent } from './pages/auth/citas/citas.component';
 import { ConsultasComponent } from './pages/auth/consultas/consultas.component';
 import { NavbarComponent } from './pages/navbar/navbar.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+
 
 @NgModule({
   declarations: [
@@ -20,7 +23,10 @@ import { NavbarComponent } from './pages/navbar/navbar.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
