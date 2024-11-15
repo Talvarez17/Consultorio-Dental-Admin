@@ -3,56 +3,75 @@
 <div class="overflow-x-auto flex justify-center flex-wrap">
 
     <div class="my-2 w-11/12" onclick="agregarPaciente.showModal()">
-        <button class="btn bg-teal-500 text-white rounded-md hover:bg-teal-300 hover:border-teal-300 w-full">Agregar paciente
+        <button class="btn bg-teal-500 text-white rounded-md hover:bg-teal-300 hover:border-teal-300 w-full">Agregar
+            paciente
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
-                <path fill-rule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd" />
+                <path fill-rule="evenodd"
+                    d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z"
+                    clip-rule="evenodd" />
             </svg>
         </button>
     </div>
 
-    <div class="stats shadow border-teal-400 border-2 w-11/12 hover:border-teal-700 cursor-pointer">
+    <div *ngFor="let paciente of pacientes"
+        class="stats shadow border-teal-400 border-2 w-11/12 hover:border-teal-700 cursor-pointer my-1">
 
         <div class="stat">
             <div class="stat-figure text-secondary">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
-                    <path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM3.751 20.105a8.25 8.25 0 0 1 16.498 0 .75.75 0 0 1-.437.695A18.683 18.683 0 0 1 12 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 0 1-.437-.695Z" clip-rule="evenodd" />
+                    <path fill-rule="evenodd"
+                        d="M7.5 6a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM3.751 20.105a8.25 8.25 0 0 1 16.498 0 .75.75 0 0 1-.437.695A18.683 18.683 0 0 1 12 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 0 1-.437-.695Z"
+                        clip-rule="evenodd" />
                 </svg>
             </div>
             <div class="text-black text-lg font-bold">Paciente</div>
-            <div class="text-black text-base font-normal">Tomas Alvarez Lopez</div>
-            <div class="text-gray-600 text-sm font-normal">23 Años</div>
+            <div class="text-black text-base font-normal">{{paciente.nombre}} {{paciente.apellidoPaterno}}
+                {{paciente.apellidoMaterno}}</div>
+            <div class="text-gray-600 text-sm font-normal">{{calcularEdad(paciente.fechaNacimiento)}} Años</div>
         </div>
 
         <div class="stat">
             <div class="stat-figure text-secondary">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
-                    <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm8.706-1.442c1.146-.573 2.437.463 2.126 1.706l-.709 2.836.042-.02a.75.75 0 0 1 .67 1.34l-.04.022c-1.147.573-2.438-.463-2.127-1.706l.71-2.836-.042.02a.75.75 0 1 1-.671-1.34l.041-.022ZM12 9a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" clip-rule="evenodd" />
+                    <path fill-rule="evenodd"
+                        d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm8.706-1.442c1.146-.573 2.437.463 2.126 1.706l-.709 2.836.042-.02a.75.75 0 0 1 .67 1.34l-.04.022c-1.147.573-2.438-.463-2.127-1.706l.71-2.836-.042.02a.75.75 0 1 1-.671-1.34l.041-.022ZM12 9a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"
+                        clip-rule="evenodd" />
                 </svg>
             </div>
             <div class="text-black text-lg font-bold">Contacto</div>
-            <div class="text-black text-base font-normal">4151888440</div>
-            <div class="text-gray-600 text-sm font-normal">tom@gmail.com</div>
+            <div class="text-black text-base font-normal">{{paciente.telefono}}</div>
+            <div class="text-gray-600 text-sm font-normal">{{paciente.correo}}</div>
         </div>
 
         <div class="stat">
             <div class="stat-figure text-secondary">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
-                    <path d="M10.5 1.875a1.125 1.125 0 0 1 2.25 0v8.219c.517.162 1.02.382 1.5.659V3.375a1.125 1.125 0 0 1 2.25 0v10.937a4.505 4.505 0 0 0-3.25 2.373 8.963 8.963 0 0 1 4-.935A.75.75 0 0 0 18 15v-2.266a3.368 3.368 0 0 1 .988-2.37 1.125 1.125 0 0 1 1.591 1.59 1.118 1.118 0 0 0-.329.79v3.006h-.005a6 6 0 0 1-1.752 4.007l-1.736 1.736a6 6 0 0 1-4.242 1.757H10.5a7.5 7.5 0 0 1-7.5-7.5V6.375a1.125 1.125 0 0 1 2.25 0v5.519c.46-.452.965-.832 1.5-1.141V3.375a1.125 1.125 0 0 1 2.25 0v6.526c.495-.1.997-.151 1.5-.151V1.875Z" />
+                    <path
+                        d="M10.5 1.875a1.125 1.125 0 0 1 2.25 0v8.219c.517.162 1.02.382 1.5.659V3.375a1.125 1.125 0 0 1 2.25 0v10.937a4.505 4.505 0 0 0-3.25 2.373 8.963 8.963 0 0 1 4-.935A.75.75 0 0 0 18 15v-2.266a3.368 3.368 0 0 1 .988-2.37 1.125 1.125 0 0 1 1.591 1.59 1.118 1.118 0 0 0-.329.79v3.006h-.005a6 6 0 0 1-1.752 4.007l-1.736 1.736a6 6 0 0 1-4.242 1.757H10.5a7.5 7.5 0 0 1-7.5-7.5V6.375a1.125 1.125 0 0 1 2.25 0v5.519c.46-.452.965-.832 1.5-1.141V3.375a1.125 1.125 0 0 1 2.25 0v6.526c.495-.1.997-.151 1.5-.151V1.875Z" />
                 </svg>
             </div>
             <div class="text-black text-lg font-bold">Acciones</div>
             <div class="flex flex-row flex-wrap">
-                <button onclick="agregarCita.showModal()" title="Agregar cita" class="btn m-1 bg-teal-500 text-white rounded-md hover:bg-teal-300 hover:border-teal-300"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                  </svg>                  
-                </button>
-                <button onclick="editarPaciente.showModal()" title="Editar registro" class="btn m-1 bg-gray-500 text-white rounded-md hover:bg-gray-300 hover:border-gray-300"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
-                        <path d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32L19.513 8.2Z" />
+                <button onclick="agregarCita.showModal()" title="Agregar cita"
+                    class="btn m-1 bg-teal-500 text-white rounded-md hover:bg-teal-300 hover:border-teal-300"><svg
+                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                     </svg>
                 </button>
-                <button onclick="eliminarPaciente.showModal()" title="Eliminar registro" class="btn m-1 bg-red-500 text-white rounded-md hover:bg-red-300 hover:border-red-300"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                        class="size-6">
-                        <path fill-rule="evenodd" d="M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 0 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z" clip-rule="evenodd" />
+                <button (click)="abrirModalYObtenerPaciente(paciente.id)" title="Editar registro"
+                    class="btn m-1 bg-gray-500 text-white rounded-md hover:bg-gray-300 hover:border-gray-300"><svg
+                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                        <path
+                            d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32L19.513 8.2Z" />
+                    </svg>
+                </button>
+                <button (click)="eliminarPaciente(paciente.id)" title="Eliminar registro"
+                    class="btn m-1 bg-red-500 text-white rounded-md hover:bg-red-300 hover:border-red-300"><svg
+                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                        <path fill-rule="evenodd"
+                            d="M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 0 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z"
+                            clip-rule="evenodd" />
                     </svg>
                 </button>
             </div>
@@ -65,46 +84,65 @@
 <dialog id="agregarPaciente" class="modal">
     <div class="modal-box w-5/6 max-w-5xl ">
         <h3 class="text-lg font-bold">Agregar paciente</h3>
-        <form>
+        <form [formGroup]="FormularioA">
 
             <div class="flex flex-row justify-center mt-2">
                 <div class="mx-1 w-1/3">
                     <label class="block text-center text-black">Nombre</label>
-                    <input type="text" class="w-full rounded-md py-2 px-3 flex-auto" placeholder="Nombre">
+                    <input type="text" class="w-full rounded-md py-2 px-3 flex-auto" placeholder="Nombre"
+                        formControlName="nombre">
+                    <p class="font-size: small text-red-600" *ngIf="campoValidoAgregar('nombre')">Este campo es requerido</p>
                 </div>
                 <div class="mx-1 w-1/3">
                     <label class="block text-center text-black">Apellido Paterno</label>
-                    <input type="text" class="w-full rounded-md py-2 px-3 flex-auto" placeholder="Apellido Paterno">
+                    <input type="text" class="w-full rounded-md py-2 px-3 flex-auto" placeholder="Apellido Paterno"
+                        formControlName="apellidoPaterno">
+                    <p class="font-size: small text-red-600" *ngIf="campoValidoAgregar('apellidoPaterno')">Este campo es
+                        requerido</p>
                 </div>
                 <div class="mx-1 w-1/3">
                     <label class="block text-center text-black">Apellido Materno</label>
-                    <input type="text" class="w-full rounded-md py-2 px-3 flex-auto" placeholder="Apellido Materno">
+                    <input type="text" class="w-full rounded-md py-2 px-3 flex-auto" placeholder="Apellido Materno"
+                        formControlName="apellidoMaterno">
+                    <p class="font-size: small text-red-600" *ngIf="campoValidoAgregar('apellidoMaterno')">Este campo es
+                        requerido</p>
                 </div>
             </div>
 
             <div class="flex flex-row justify-center mt-2">
                 <div class="mx-1 w-1/4">
                     <label class="block text-center text-black">Fecha nacimiento</label>
-                    <input type="date" class="w-full rounded-md py-2 px-3 flex-auto">
+                    <input type="date" class="w-full rounded-md py-2 px-3 flex-auto" formControlName="fechaNacimiento">
+                    <p class="font-size: small text-red-600" *ngIf="campoValidoAgregar('fechaNacimiento')">Este campo es
+                        requerido</p>
                 </div>
                 <div class="mx-1 w-1/4">
                     <label class="block text-center text-black">Teléfono</label>
-                    <input type="text" class="w-full rounded-md py-2 px-3 flex-auto" placeholder="4151231231">
+                    <input type="text" class="w-full rounded-md py-2 px-3 flex-auto" placeholder="4151231231"
+                        formControlName="telefono">
+                    <p class="font-size: small text-red-600" *ngIf="campoValidoAgregar('telefono')">Este campo es requerido</p>
                 </div>
                 <div class="mx-1 w-1/4">
                     <label class="block text-center text-black">Correo</label>
-                    <input type="email" class="w-full rounded-md py-2 px-3 flex-auto" placeholder="paciente@gmai.com">
+                    <input type="email" class="w-full rounded-md py-2 px-3 flex-auto" placeholder="paciente@gmai.com"
+                        formControlName="correo">
+                    <p class="font-size: small text-red-600" *ngIf="campoValidoAgregar('correo')">Este campo es requerido</p>
                 </div>
                 <div class="mx-1 w-1/4">
                     <label class="block text-center text-black">Contraseña</label>
-                    <input type="text" class="w-full rounded-md py-2 px-3 flex-auto" placeholder="Contraseña">
+                    <input type="text" class="w-full rounded-md py-2 px-3 flex-auto" placeholder="Contraseña"
+                        formControlName="contrasenia">
+                    <p class="font-size: small text-red-600" *ngIf="campoValidoAgregar('contrasenia')">Este campo es requerido
+                    </p>
                 </div>
             </div>
         </form>
         <div class="modal-action">
             <form method="dialog">
-                <button class="btn bg-red-500 text-white rounded-md hover:bg-red-300 hover:border-red-300 m-1">Cancelar</button>
-                <button class="btn bg-teal-500 text-white rounded-md hover:bg-teal-300 hover:border-teal-300">Guardar</button>
+                <button
+                    class="btn bg-red-500 text-white rounded-md hover:bg-red-300 hover:border-red-300 m-1">Cancelar</button>
+                <button (click)="agregarPaciente()" [disabled]="!FormularioA.valid"
+                    class="btn bg-teal-500 text-white rounded-md hover:bg-teal-300 hover:border-teal-300">Guardar</button>
             </form>
 
         </div>
@@ -113,75 +151,68 @@
 
 <!-- Modal para editar -->
 
-<dialog id="editarPaciente" class="modal">
+<dialog #editarPaciente id="editarPaciente" class="modal">
     <div class="modal-box w-5/6 max-w-5xl ">
         <h3 class="text-lg font-bold">Editar datos del paciente</h3>
-        <form>
+        <form [formGroup]="FormularioE">
 
             <div class="flex flex-row justify-center mt-2">
                 <div class="mx-1 w-1/3">
                     <label class="block text-center text-black">Nombre</label>
-                    <input type="text" class="w-full rounded-md py-2 px-3 flex-auto" placeholder="Nombre">
+                    <input type="text" class="w-full rounded-md py-2 px-3 flex-auto" placeholder="Nombre"
+                        formControlName="nombre">
+                    <p class="font-size: small text-red-600" *ngIf="campoValidoEditar('nombre')">Este campo es requerido</p>
                 </div>
                 <div class="mx-1 w-1/3">
                     <label class="block text-center text-black">Apellido Paterno</label>
-                    <input type="text" class="w-full rounded-md py-2 px-3 flex-auto" placeholder="Apellido Paterno">
+                    <input type="text" class="w-full rounded-md py-2 px-3 flex-auto" placeholder="Apellido Paterno"
+                        formControlName="apellidoPaterno">
+                    <p class="font-size: small text-red-600" *ngIf="campoValidoEditar('apellidoPaterno')">Este campo es
+                        requerido</p>
                 </div>
                 <div class="mx-1 w-1/3">
                     <label class="block text-center text-black">Apellido Materno</label>
-                    <input type="text" class="w-full rounded-md py-2 px-3 flex-auto" placeholder="Apellido Materno">
+                    <input type="text" class="w-full rounded-md py-2 px-3 flex-auto" placeholder="Apellido Materno"
+                        formControlName="apellidoMaterno">
+                    <p class="font-size: small text-red-600" *ngIf="campoValidoEditar('apellidoMaterno')">Este campo es
+                        requerido</p>
                 </div>
             </div>
 
             <div class="flex flex-row justify-center mt-2">
                 <div class="mx-1 w-1/4">
                     <label class="block text-center text-black">Fecha nacimiento</label>
-                    <input type="date" class="w-full rounded-md py-2 px-3 flex-auto">
+                    <input type="date" class="w-full rounded-md py-2 px-3 flex-auto" formControlName="fechaNacimiento">
+                    <p class="font-size: small text-red-600" *ngIf="campoValidoEditar('fechaNacimiento')">Este campo es
+                        requerido</p>
                 </div>
                 <div class="mx-1 w-1/4">
                     <label class="block text-center text-black">Teléfono</label>
-                    <input type="text" class="w-full rounded-md py-2 px-3 flex-auto" placeholder="4151231231">
+                    <input type="text" class="w-full rounded-md py-2 px-3 flex-auto" placeholder="4151231231"
+                        formControlName="telefono">
+                    <p class="font-size: small text-red-600" *ngIf="campoValidoEditar('telefono')">Este campo es requerido</p>
                 </div>
                 <div class="mx-1 w-1/4">
                     <label class="block text-center text-black">Correo</label>
-                    <input type="email" class="w-full rounded-md py-2 px-3 flex-auto" placeholder="paciente@gmai.com">
+                    <input type="email" class="w-full rounded-md py-2 px-3 flex-auto" placeholder="paciente@gmai.com"
+                        formControlName="correo">
+                    <p class="font-size: small text-red-600" *ngIf="campoValidoEditar('correo')">Este campo es requerido</p>
                 </div>
                 <div class="mx-1 w-1/4">
                     <label class="block text-center text-black">Contraseña</label>
-                    <input type="text" class="w-full rounded-md py-2 px-3 flex-auto" placeholder="Contraseña">
+                    <input type="text" class="w-full rounded-md py-2 px-3 flex-auto" placeholder="Contraseña"
+                        formControlName="contrasenia">
+                    <p class="font-size: small text-red-600" *ngIf="campoValidoEditar('contrasenia')">Este campo es requerido
+                    </p>
                 </div>
             </div>
         </form>
         <div class="modal-action">
             <form method="dialog">
-                <button class="btn bg-red-500 text-white rounded-md hover:bg-red-300 hover:border-red-300 m-1">Cancelar</button>
-                <button class="btn bg-teal-500 text-white rounded-md hover:bg-teal-300 hover:border-teal-300">Guardar</button>
-            </form>
-
-        </div>
-    </div>
-</dialog>
-
-<!-- Modal para eliminar -->
-
-<dialog id="eliminarPaciente" class="modal">
-    <div class="modal-box">
-        <h3 class="text-lg font-bold">Eliminar registro</h3>
-        <div class="flex flex-row justify-around">
-            <div class=" w-1/2 m-1 text-center">
-                <p class="text-base mt-1">¿Quieres continuar?</p>
-                <p class="text-sm mt-1">No podras recuperar el registro una vez eliminado</p>
-            </div>
-            <div class="w-1/2 m-1 text-center flex justify-center">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-20 text-red-600">
-                    <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm11.378-3.917c-.89-.777-2.366-.777-3.255 0a.75.75 0 0 1-.988-1.129c1.454-1.272 3.776-1.272 5.23 0 1.513 1.324 1.513 3.518 0 4.842a3.75 3.75 0 0 1-.837.552c-.676.328-1.028.774-1.028 1.152v.75a.75.75 0 0 1-1.5 0v-.75c0-1.279 1.06-2.107 1.875-2.502.182-.088.351-.199.503-.331.83-.727.83-1.857 0-2.584ZM12 18a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" clip-rule="evenodd" />
-                  </svg>                  
-            </div>
-        </div>
-        <div class="modal-action">
-            <form method="dialog">
-                <button class="btn bg-red-500 text-white rounded-md hover:bg-red-300 hover:border-red-300 m-1">Cancelar</button>
-                <button class="btn bg-teal-500 text-white rounded-md hover:bg-teal-300 hover:border-teal-300">Aceptar</button>
+                <button
+                    class="btn bg-red-500 text-white rounded-md hover:bg-red-300 hover:border-red-300 m-1">Cancelar</button>
+                <button (click)="actualizarPaciente(pacienteSolo)" [disabled]="!FormularioE.valid"
+                    class="btn bg-teal-500 text-white rounded-md hover:bg-teal-300 hover:border-teal-300">Guardar</button>
             </form>
 
         </div>
@@ -215,11 +246,12 @@
         </form>
         <div class="modal-action">
             <form method="dialog">
-                <button class="btn bg-red-500 text-white rounded-md hover:bg-red-300 hover:border-red-300 m-1">Cancelar</button>
-                <button class="btn bg-teal-500 text-white rounded-md hover:bg-teal-300 hover:border-teal-300">Guardar</button>
+                <button
+                    class="btn bg-red-500 text-white rounded-md hover:bg-red-300 hover:border-red-300 m-1">Cancelar</button>
+                <button
+                    class="btn bg-teal-500 text-white rounded-md hover:bg-teal-300 hover:border-teal-300">Guardar</button>
             </form>
 
         </div>
     </div>
 </dialog>
-

@@ -11,19 +11,19 @@
             <img src="../../../assets/logosf.png" class="mx-auto block" height="150" width="150">
         </div>
 
-        <form>
+        <form [formGroup]="Login" (ngSubmit)="login()">
             <div class="mb-3 text-center">
                 <label class="block text-black">Correo</label>
-                <input type="text" class="w-full rounded-md py-2 px-3">
+                <input formControlName="correo" type="text" class="w-full rounded-md py-2 px-3">
             </div>
 
             <div class="mb-3 text-center">
                 <label class="block text-black">Contraseña</label>
-                <input type="password" class="w-full rounded-md py-2 px-3">
+                <input formControlName="contrasenia" type="password" class="w-full rounded-md py-2 px-3">
             </div>
 
-            <button type="button"
-                class="bg-teal-500 text-white rounded-md hover:bg-teal-300 hover:border-teal-300 py-2 px-4 w-full" (click)="login()">Ingresar
+            <button type="submit"
+                class="bg-teal-500 text-white rounded-md hover:bg-teal-300 hover:border-teal-300 py-2 px-4 w-full">Ingresar
             </button>
         </form>
     </div>
