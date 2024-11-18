@@ -4,14 +4,15 @@ import { LoginComponent } from './pages/login/login.component';
 import { PacientesComponent } from './pages/auth/pacientes/pacientes.component';
 import { CitasComponent } from './pages/auth/citas/citas.component';
 import { ConsultasComponent } from './pages/auth/consultas/consultas.component';
+import { AuthGuard } from './pages/auth/guard/auth.guard';
 
 const routes: Routes = [
   {
     path: "", children: [
       { path: "login", component: LoginComponent },
-      { path: "pacientes", component: PacientesComponent },
-      { path: "citas", component: CitasComponent },
-      { path: "consultas", component: ConsultasComponent },
+      { path: "pacientes", component: PacientesComponent, canActivate: [AuthGuard] },
+      { path: "citas", component: CitasComponent, canActivate: [AuthGuard] },
+      { path: "consultas", component: ConsultasComponent, canActivate: [AuthGuard] },
 
       { path: "**", redirectTo: "login" },
     ]

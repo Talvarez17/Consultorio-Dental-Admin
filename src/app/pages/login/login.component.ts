@@ -17,8 +17,7 @@ export class LoginComponent {
   });
 
   constructor(public router: Router, private fb: FormBuilder, public service: ConexionService) {
-    localStorage.clear();
-  }
+ }
 
   ngOnInit() { }
 
