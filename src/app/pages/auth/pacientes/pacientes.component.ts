@@ -16,6 +16,8 @@ export class PacientesComponent {
   pacientes: any = [];
   pacienteSolo: any = [];
 
+
+  // --------------------------------------------- Formularios -------------------------------------------------------------------
   FormularioA: FormGroup = this.fb.group({
     _id: this.uudi,
     nombre: [, [Validators.required, Validators.maxLength(50), Validators.minLength(2)]],
@@ -28,7 +30,7 @@ export class PacientesComponent {
   });
 
   FormularioE: FormGroup = this.fb.group({
-    id:[],
+    id: [],
     nombre: [, [Validators.required, Validators.maxLength(50), Validators.minLength(2)]],
     apellidoPaterno: [, [Validators.required, Validators.maxLength(50), Validators.minLength(2)]],
     apellidoMaterno: [, [Validators.required, Validators.maxLength(50), Validators.minLength(2)]],
@@ -38,12 +40,24 @@ export class PacientesComponent {
     contrasenia: [, Validators.required]
   });
 
+  FormularioCita: FormGroup = this.fb.group({
+    id: this.uudi,
+    idPaciente: [],
+    nombrePaciente: [],
+    apellidoPaternoPaciente: [],
+    apellidoMaternoPaciente: [],
+    motivo: [, [Validators.required, Validators.maxLength(50), Validators.minLength(2)]],
+    fecha: [, Validators.required],
+    hora: [, Validators.required]
+  });
+
 
   constructor(public router: Router, private fb: FormBuilder, public service: ConexionService) {
   }
 
   ngOnInit() { this.obtenerPacientes() }
 
+  //-------------------------------------------- Calculo de la edad del paciente --------------------------------------
   calcularEdad(fechaNacimiento: string): number {
     const hoy = new Date();
     const fechaNac = new Date(fechaNacimiento);
@@ -57,6 +71,8 @@ export class PacientesComponent {
     return edad;
   }
 
+  //-------------------------------------------- Manejo de los modales editar y cita --------------------------------------
+
   @ViewChild('editarPaciente') editarPaciente!: ElementRef;
 
   abrirModalYObtenerPaciente(id: any) {
@@ -64,10 +80,24 @@ export class PacientesComponent {
     this.obtenerUnPaciente(id);
   }
 
+  @ViewChild('agregarCita') agregarCita!: ElementRef;
+
+  abrirModalCita(id: any, nombre: string, apellidoPaterno: string, apellidoMaterno: string) {
+    this.agregarCita.nativeElement.showModal();
+
+    this.FormularioCita.patchValue({
+      idPaciente: id,
+      nombrePaciente: nombre,
+      apellidoPaternoPaciente: apellidoPaterno,
+      apellidoMaternoPaciente: apellidoMaterno,
+    });
+  }
+
+  //-------------------------------------------- Calculo de la edad del paciente --------------------------------------
+
   obtenerPacientes() {
     this.service.get('paciente/getAll').subscribe((info: any) => {
 
-      console.log(info.data)
       if (info) {
         this.pacientes = info.data;
       }
@@ -94,12 +124,12 @@ export class PacientesComponent {
     })
   }
 
-  actualizarPaciente(id:any) {
+  actualizarPaciente(id: any) {
 
     this.service.put(`paciente/update/${id}`, this.FormularioE.value).subscribe((info: any) => {
 
       console.log(this.FormularioA.value);
-      
+
 
       if (info.error == false) {
 
@@ -206,12 +236,49 @@ export class PacientesComponent {
 
   }
 
+  crearCita() {
+    this.service.post('citas/insert', this.FormularioCita.value).subscribe((info: any) => {
+
+      if (info.error == false) {
+        console.log(info.data);
+
+        Swal.fire({
+          icon: "success",
+          title: "Exito",
+          text: "Registro creado con exito",
+          showConfirmButton: false,
+          timer: 1500
+        });
+
+        setTimeout(() => {
+          location.reload();
+        }, 1500);
+      }
+      else {
+        Swal.fire({
+          icon: "error",
+          title: "Upsss",
+          text: "Hubo un error al intentar crear el registro, intentelo de nuevo",
+          showConfirmButton: false,
+          timer: 1500
+        });
+      };
+    });
+
+  }
+
+  //-------------------------------------------- Valdacion de campos --------------------------------------
+
   campoValidoAgregar(campo: string) {
     return this.FormularioA.controls[campo].errors && this.FormularioA.controls[campo].touched;
   };
 
   campoValidoEditar(campo: string) {
     return this.FormularioE.controls[campo].errors && this.FormularioE.controls[campo].touched;
+  };
+
+  campoValidoCita(campo: string) {
+    return this.FormularioCita.controls[campo].errors && this.FormularioCita.controls[campo].touched;
   };
 
 }
