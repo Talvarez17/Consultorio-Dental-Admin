@@ -36,8 +36,7 @@ export class PacientesComponent {
     apellidoMaterno: [, [Validators.required, Validators.maxLength(50), Validators.minLength(2)]],
     fechaNacimiento: [, Validators.required],
     telefono: [, [Validators.required, Validators.maxLength(10), Validators.minLength(10), Validators.pattern(/^\d{10}$/)]],
-    correo: [, [Validators.required, Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)]],
-    contrasenia: [, Validators.required]
+    correo: [, [Validators.required, Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)]]
   });
 
   FormularioCita: FormGroup = this.fb.group({
@@ -115,8 +114,7 @@ export class PacientesComponent {
           apellidoMaterno: info.data.apellidoMaterno,
           fechaNacimiento: info.data.fechaNacimiento,
           telefono: info.data.telefono,
-          correo: info.data.correo,
-          contrasenia: null
+          correo: info.data.correo
         });
 
         this.pacienteSolo = info.data.id;
