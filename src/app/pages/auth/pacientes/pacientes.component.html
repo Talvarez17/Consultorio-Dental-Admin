@@ -20,8 +20,8 @@
         </label>
     </div>
 
-    <div *ngFor="let paciente of pacientes"
-        class="stats stats stats-vertical lg:stats-horizontal shadow border-teal-400 border-2 w-11/12 hover:border-teal-700 cursor-pointer my-1">
+    <div *ngFor="let paciente of pacientes | paginate: { itemsPerPage: perPage, currentPage: page, totalItems: total }"
+        class="stats stats-vertical lg:stats-horizontal shadow border-teal-400 border-2 w-11/12 hover:border-teal-700 cursor-pointer my-1">
 
         <div class="stat place-items-center">
             <div class="text-black text-lg font-bold flex justify-center">
@@ -93,7 +93,9 @@
                 </button>
             </div>
         </div>
+
     </div>
+    <pagination-controls [previousLabel]="'Anterior'" [nextLabel]="'Siguiente'" (pageChange)="onPageChange($event)"></pagination-controls>
 </div>
 
 <!-- Modal para agregar paciente -->
@@ -143,7 +145,7 @@
                 </div>
                 <div class="mx-1 w-1/4">
                     <label class="block text-center text-black">Correo</label>
-                    <input type="email" class="w-full rounded-md py-2 px-3 flex-auto" placeholder="paciente@gmai.com"
+                    <input type="email" class="w-full rounded-md py-2 px-3 flex-auto" placeholder="paciente@gmail.com"
                         formControlName="correo">
                     <p class="font-size: small text-red-600" *ngIf="campoValidoAgregar('correo')">Este campo es
                         requerido</p>
@@ -162,7 +164,7 @@
             <form method="dialog">
                 <button
                     class="btn bg-red-500 text-white rounded-md hover:bg-red-300 hover:border-red-300 m-1">Cancelar</button>
-                <button (click)="agregarPaciente()" [disabled]="!FormularioA.valid"
+                <button (click)="agregarPaciente()" [disabled]="!FormularioA.valid || !save"
                     class="btn bg-teal-500 text-white rounded-md hover:bg-teal-300 hover:border-teal-300">Guardar</button>
             </form>
 

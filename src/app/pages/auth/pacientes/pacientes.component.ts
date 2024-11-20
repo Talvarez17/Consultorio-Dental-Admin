@@ -15,7 +15,10 @@ export class PacientesComponent {
   uudi = uuidv4();
   pacientes: any = [];
   pacienteSolo: any = [];
-
+  save: boolean = true;
+  page = 1;
+  total = 0;
+  perPage = 3;
 
   // --------------------------------------------- Formularios -------------------------------------------------------------------
   FormularioA: FormGroup = this.fb.group({
@@ -75,8 +78,10 @@ export class PacientesComponent {
   @ViewChild('editarPaciente') editarPaciente!: ElementRef;
 
   abrirModalYObtenerPaciente(id: any) {
-    this.editarPaciente.nativeElement.showModal();
     this.obtenerUnPaciente(id);
+    setTimeout(() => {
+      this.editarPaciente.nativeElement.showModal();
+    }, 500);
   }
 
   @ViewChild('agregarCita') agregarCita!: ElementRef;
@@ -92,15 +97,21 @@ export class PacientesComponent {
     });
   }
 
-  //-------------------------------------------- Calculo de la edad del paciente --------------------------------------
+  //-------------------------------------------- Metodos --------------------------------------
 
-  obtenerPacientes() {
-    this.service.get('paciente/getAll').subscribe((info: any) => {
-
+  obtenerPacientes(page: number = 1) {
+    this.service.get(`paciente/getAll?page=${page}&pageSize=${this.perPage}`).subscribe((info: any) => {
+      
       if (info) {
-        this.pacientes = info.data;
+        this.pacientes = info.data; 
+        this.total = info.pagination.total; 
+        this.page = info.pagination.currentPage;
       }
-    })
+    });
+  }
+
+  onPageChange(page: number): void {
+    this.obtenerPacientes(page);
   }
 
   obtenerUnPaciente(id: any) {
@@ -125,9 +136,6 @@ export class PacientesComponent {
   actualizarPaciente(id: any) {
 
     this.service.put(`paciente/update/${id}`, this.FormularioE.value).subscribe((info: any) => {
-
-      console.log(this.FormularioA.value);
-
 
       if (info.error == false) {
 
@@ -158,6 +166,7 @@ export class PacientesComponent {
 
   agregarPaciente() {
 
+    this.save = false;
     this.service.post('paciente/insert', this.FormularioA.value).subscribe((info: any) => {
 
       if (info.error == false) {
@@ -173,6 +182,7 @@ export class PacientesComponent {
 
         setTimeout(() => {
           location.reload();
+          this.save = true;
         }, 1500);
       }
       else {

@@ -16,6 +16,8 @@ export class CitasComponent {
   date = new Date();
   citas: any = [];
   citaSola: any = [];
+  save: boolean = true;
+
 
   horaActual() {
     const hora = this.date.getHours().toString().padStart(2, '0');
@@ -84,8 +86,10 @@ export class CitasComponent {
   @ViewChild('editarCita') editarCita!: ElementRef;
 
   abrirModalEditar(id: any) {
-    this.editarCita.nativeElement.showModal();
     this.obtenerUnaCita(id);
+    setTimeout(() => {
+      this.editarCita.nativeElement.showModal();
+    }, 500);
   }
 
   @ViewChild('agregarReceta') agregarReceta!: ElementRef;
@@ -102,7 +106,7 @@ export class CitasComponent {
     });
   }
 
-  //-------------------------------------------- Calculo de la edad del paciente --------------------------------------
+  //-------------------------------------------- Metodos --------------------------------------
 
   obtenerCitas() {
     this.service.get('citas/getAll').subscribe((info: any) => {
@@ -169,11 +173,12 @@ export class CitasComponent {
 
   agregarConsulta() {
 
+    this.save = false;
     this.service.post('consulta/insert', this.FormularioA.value).subscribe((info: any) => {
-
+      
       if (info.error == false) {
         console.log(info.data);
-
+        
         Swal.fire({
           icon: "success",
           title: "Exito",
@@ -181,9 +186,10 @@ export class CitasComponent {
           showConfirmButton: false,
           timer: 1500
         });
-
+        
         setTimeout(() => {
           location.reload();
+          this.save = true;
         }, 1500);
       }
       else {
