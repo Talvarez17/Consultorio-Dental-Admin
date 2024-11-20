@@ -6,6 +6,7 @@ import { CitasComponent } from './pages/auth/citas/citas.component';
 import { ConsultasComponent } from './pages/auth/consultas/consultas.component';
 import { AuthGuard } from './pages/auth/guard/auth.guard';
 import { ProximasCitasComponent } from './pages/auth/proximas-citas/proximas-citas.component';
+import { CitasPacienteComponent } from './pages/auth/citas-paciente/citas-paciente.component';
 
 const routes: Routes = [
   {
@@ -14,7 +15,8 @@ const routes: Routes = [
       { path: "pacientes", component: PacientesComponent, canActivate: [AuthGuard] },
       { path: "citas", component: CitasComponent, canActivate: [AuthGuard] },
       { path: "proximas", component: ProximasCitasComponent, canActivate: [AuthGuard] },
-      { path: "consultas", component: ConsultasComponent, canActivate: [AuthGuard] },
+      { path: "citasPaciente/:idPaciente", component: CitasPacienteComponent, canActivate: [AuthGuard] },
+      { path: "recetas/:idPaciente", component: ConsultasComponent, canActivate: [AuthGuard] },
 
       { path: "**", redirectTo: "login" },
     ]

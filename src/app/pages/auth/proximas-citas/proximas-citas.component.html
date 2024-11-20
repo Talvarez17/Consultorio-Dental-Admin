@@ -73,18 +73,6 @@
                 </div>Acciones
             </div>
             <div class="flex flex-row flex-wrap">
-                <button
-                    (click)="abrirModalReceta(cita.idPaciente, cita.id, cita.nombrePaciente, cita.apellidoPaternoPaciente, cita.apellidoMaternoPaciente)"
-                    title="Agregar consulta"
-                    class="btn m-1 bg-teal-500 text-white rounded-md hover:bg-teal-300 hover:border-teal-300"><svg
-                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
-                        <path fill-rule="evenodd"
-                            d="M5.625 1.5H9a3.75 3.75 0 0 1 3.75 3.75v1.875c0 1.036.84 1.875 1.875 1.875H16.5a3.75 3.75 0 0 1 3.75 3.75v7.875c0 1.035-.84 1.875-1.875 1.875H5.625a1.875 1.875 0 0 1-1.875-1.875V3.375c0-1.036.84-1.875 1.875-1.875ZM12.75 12a.75.75 0 0 0-1.5 0v2.25H9a.75.75 0 0 0 0 1.5h2.25V18a.75.75 0 0 0 1.5 0v-2.25H15a.75.75 0 0 0 0-1.5h-2.25V12Z"
-                            clip-rule="evenodd" />
-                        <path
-                            d="M14.25 5.25a5.23 5.23 0 0 0-1.279-3.434 9.768 9.768 0 0 1 6.963 6.963A5.23 5.23 0 0 0 16.5 7.5h-1.875a.375.375 0 0 1-.375-.375V5.25Z" />
-                    </svg>
-                </button>
                 <button (click)="abrirModalEditar(cita.id)" title="Editar registro"
                     class="btn m-1 bg-gray-500 text-white rounded-md hover:bg-gray-300 hover:border-gray-300"><svg
                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
@@ -155,50 +143,7 @@
             <form method="dialog">
                 <button
                     class="btn bg-red-500 text-white rounded-md hover:bg-red-300 hover:border-red-300 m-1">Cancelar</button>
-                <button (click)="actualizarPaciente(citaSola)" [disabled]="!FormularioE.valid"
-                    class="btn bg-teal-500 text-white rounded-md hover:bg-teal-300 hover:border-teal-300">Guardar</button>
-            </form>
-
-        </div>
-    </div>
-</dialog>
-
-<!-- Agregar receta -->
-
-<dialog #agregarReceta id="agregarReceta" class="modal">
-    <div class="modal-box w-5/6 max-w-5xl ">
-        <h3 class="text-lg font-bold">Agregar receta</h3>
-        <form [formGroup]="FormularioA">
-
-            <div class="flex flex-row justify-center mt-2">
-                <div class="mx-1 w-full">
-                    <label class="block text-center text-black">Prescripcion</label>
-                    <textarea type="text" class="w-full rounded-md py-2 px-3 flex-auto"
-                        placeholder="Escriba la prescripción del paciente" formControlName="prescripcion"></textarea>
-                    <p class="font-size: small text-red-600" *ngIf="campoValidoAgregar('prescripcion')">Este campo es
-                        requerido
-                    </p>
-                </div>
-            </div>
-
-            <div class="flex flex-row justify-center mt-2">
-                <div class="mx-1 w-full">
-                    <label class="block text-center text-black">Recomendaciones</label>
-                    <textarea type="text" class="w-full rounded-md py-2 px-3 flex-auto"
-                        placeholder="Escriba las recomendaciones del paciente"
-                        formControlName="recomendaciones"></textarea>
-                    <p class="font-size: small text-red-600" *ngIf="campoValidoAgregar('recomendaciones')">Este campo es
-                        requerido
-                    </p>
-                </div>
-            </div>
-
-        </form>
-        <div class="modal-action">
-            <form method="dialog">
-                <button
-                    class="btn bg-red-500 text-white rounded-md hover:bg-red-300 hover:border-red-300 m-1">Cancelar</button>
-                <button [disabled]="!FormularioA.valid" (click)="agregarConsulta()"
+                <button (click)="actualizarCita(citaSola)" [disabled]="!FormularioE.valid"
                     class="btn bg-teal-500 text-white rounded-md hover:bg-teal-300 hover:border-teal-300">Guardar</button>
             </form>
 

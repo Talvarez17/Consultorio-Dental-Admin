@@ -108,11 +108,7 @@ export class CitasComponent {
       idCita: idC,
       nombrePaciente: nombre,
       apellidoPaternoPaciente: apellidoPaterno,
-      apellidoMaternoPaciente: apellidoMaterno,
-      motivo: [, [Validators.required, Validators.maxLength(50), Validators.minLength(2)]],
-      fecha: [, Validators.required],
-      hora: [, Validators.required],
-      estado: [, Validators.required]
+      apellidoMaternoPaciente: apellidoMaterno
     });
   }
 
@@ -264,10 +260,6 @@ export class CitasComponent {
           showConfirmButton: false,
           timer: 1500
         });
-
-        setTimeout(() => {
-          location.reload();
-        }, 1500);
       }
       else {
         Swal.fire({
