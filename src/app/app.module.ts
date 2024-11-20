@@ -11,6 +11,7 @@ import { NavbarComponent } from './pages/navbar/navbar.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import {NgxPaginationModule} from 'ngx-pagination';
+import { ProximasCitasComponent } from './pages/auth/proximas-citas/proximas-citas.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import {NgxPaginationModule} from 'ngx-pagination';
     PacientesComponent,
     CitasComponent,
     ConsultasComponent,
-    NavbarComponent
+    NavbarComponent,
+    ProximasCitasComponent
   ],
   imports: [
     BrowserModule,

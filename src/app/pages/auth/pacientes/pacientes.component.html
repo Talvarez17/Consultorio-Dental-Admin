@@ -1,5 +1,9 @@
 <app-navbar></app-navbar>
 
+<div *ngIf="update" class="fixed inset-0 flex justify-center items-center bg-slate-400 bg-opacity-75 z-50">
+    <span class="loading loading-dots loading-lg"></span>
+</div>
+
 <div class="overflow-x-auto flex justify-around flex-wrap">
 
     <div class="my-2 w-11/12 flex justify-center flex-wrap">
@@ -10,8 +14,8 @@
                     d="M5.25 6.375a4.125 4.125 0 1 1 8.25 0 4.125 4.125 0 0 1-8.25 0ZM2.25 19.125a7.125 7.125 0 0 1 14.25 0v.003l-.001.119a.75.75 0 0 1-.363.63 13.067 13.067 0 0 1-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 0 1-.364-.63l-.001-.122ZM18.75 7.5a.75.75 0 0 0-1.5 0v2.25H15a.75.75 0 0 0 0 1.5h2.25v2.25a.75.75 0 0 0 1.5 0v-2.25H21a.75.75 0 0 0 0-1.5h-2.25V7.5Z" />
             </svg>
         </button>
-        <label class="input input-bordered rounded-md flex items-center gap-2 w-4/12 mx-1">
-            <input type="text" class="grow" placeholder="Buscar paciente" />
+        <label class="input input-bordered rounded-md flex items-center gap-2 w-4/12 mx-1 overflow-hidden">
+            <input type="text" (input)="onSearch($event)" class="grow" placeholder="Buscar paciente" />
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="h-4 w-4 opacity-70">
                 <path fill-rule="evenodd"
                     d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
@@ -164,7 +168,7 @@
             <form method="dialog">
                 <button
                     class="btn bg-red-500 text-white rounded-md hover:bg-red-300 hover:border-red-300 m-1">Cancelar</button>
-                <button (click)="agregarPaciente()" [disabled]="!FormularioA.valid || !save"
+                <button (click)="agregarPaciente()" [disabled]="!FormularioA.valid"
                     class="btn bg-teal-500 text-white rounded-md hover:bg-teal-300 hover:border-teal-300">Guardar</button>
             </form>
 
@@ -264,7 +268,7 @@
                 </div>
                 <div class="mx-1 w-1/2">
                     <label class="block text-center text-black">Hora</label>
-                    <input type="time" class="w-full rounded-md py-2 px-3 flex-auto" formControlName="hora">
+                    <input type="time"z class="w-full rounded-md py-2 px-3 flex-auto" formControlName="hora">
                     <p class="font-size: small text-red-600" *ngIf="campoValidoCita('hora')">Este campo es requerido</p>
                 </div>
             </div>

@@ -6,95 +6,104 @@ import { v4 as uuidv4 } from 'uuid';
 import Swal from 'sweetalert2'
 
 @Component({
-  selector: 'app-pacientes',
-  templateUrl: './pacientes.component.html',
-  styleUrls: ['./pacientes.component.css']
+  selector: 'app-proximas-citas',
+  templateUrl: './proximas-citas.component.html',
+  styleUrls: ['./proximas-citas.component.css']
 })
-export class PacientesComponent {
-
+export class ProximasCitasComponent {
   uudi = uuidv4();
-  pacientes: any = [];
-  pacienteSolo: any = [];
+  date = new Date();
+  citas: any = [];
+  citaSola: any = [];
   page = 1;
   total = 0;
   perPage = 3;
   currentSearch: string = '';
   update = false;
 
+  horaActual() {
+    const hora = this.date.getHours().toString().padStart(2, '0');
+    const minutos = this.date.getMinutes().toString().padStart(2, '0');
+    const tiempo = `${hora}:${minutos}`;
+
+    return tiempo;
+  }
+
 
   // --------------------------------------------- Formularios -------------------------------------------------------------------
   FormularioA: FormGroup = this.fb.group({
-    _id: this.uudi,
-    nombre: [, [Validators.required, Validators.maxLength(50), Validators.minLength(2)]],
-    apellidoPaterno: [, [Validators.required, Validators.maxLength(50), Validators.minLength(2)]],
-    apellidoMaterno: [, [Validators.required, Validators.maxLength(50), Validators.minLength(2)]],
-    fechaNacimiento: [, Validators.required],
-    telefono: [, [Validators.required, Validators.maxLength(10), Validators.minLength(10), Validators.pattern(/^\d{10}$/)]],
-    correo: [, [Validators.required, Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)]],
-    contrasenia: [, Validators.required]
+    id: this.uudi,
+    idPaciente: [],
+    idCita: [],
+    nombrePaciente: [],
+    apellidoPaternoPaciente: [],
+    apellidoMaternoPaciente: [],
+    fecha: this.date.toISOString().split('T')[0],
+    hora: this.horaActual(),
+    prescripcion: [, [Validators.required, Validators.minLength(2)]],
+    recomendaciones: [, [Validators.required, Validators.minLength(2)]],
   });
 
   FormularioE: FormGroup = this.fb.group({
     id: [],
-    nombre: [, [Validators.required, Validators.maxLength(50), Validators.minLength(2)]],
-    apellidoPaterno: [, [Validators.required, Validators.maxLength(50), Validators.minLength(2)]],
-    apellidoMaterno: [, [Validators.required, Validators.maxLength(50), Validators.minLength(2)]],
-    fechaNacimiento: [, Validators.required],
-    telefono: [, [Validators.required, Validators.maxLength(10), Validators.minLength(10), Validators.pattern(/^\d{10}$/)]],
-    correo: [, [Validators.required, Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)]]
-  });
-
-  FormularioCita: FormGroup = this.fb.group({
-    id: this.uudi,
     idPaciente: [],
     nombrePaciente: [],
     apellidoPaternoPaciente: [],
     apellidoMaternoPaciente: [],
     motivo: [, [Validators.required, Validators.maxLength(50), Validators.minLength(2)]],
     fecha: [, Validators.required],
-    hora: [, Validators.required]
+    hora: [, Validators.required],
+    estado: [, Validators.required]
   });
-
 
   constructor(public router: Router, private fb: FormBuilder, public service: ConexionService) {
   }
 
-  ngOnInit() { this.obtenerPacientes() }
+  ngOnInit() { this.obtenerCitasProximas() }
 
-  //-------------------------------------------- Calculo de la edad del paciente --------------------------------------
-  calcularEdad(fechaNacimiento: string): number {
-    const hoy = new Date();
-    const fechaNac = new Date(fechaNacimiento);
-    let edad = hoy.getFullYear() - fechaNac.getFullYear();
-    const mes = hoy.getMonth() - fechaNac.getMonth();
-
-    if (mes < 0 || (mes === 0 && hoy.getDate() < fechaNac.getDate())) {
-      edad--;
-    }
-
-    return edad;
+  //-------------------------------------------- Formato de la hora y esatus --------------------------------------
+  formatoHora(hora: string): string {
+    const [horas, minutos] = hora.split(':');
+    const fecha = new Date();
+    fecha.setHours(+horas, +minutos);
+    return fecha.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   }
+
+  estatusCita(estado: any) {
+    switch (estado) {
+      case 0:
+        return "Cancelada";
+      case 1:
+        return "Activa";
+      case 2:
+        return "Completada";
+      default:
+        return "Activa";
+    }
+  }
+
 
   //-------------------------------------------- Manejo de los modales editar y cita --------------------------------------
 
-  @ViewChild('editarPaciente') editarPaciente!: ElementRef;
+  @ViewChild('editarCita') editarCita!: ElementRef;
 
-  abrirModalYObtenerPaciente(id: any) {
+  abrirModalEditar(id: any) {
     this.update = true;
-    this.obtenerUnPaciente(id);
+    this.obtenerUnaCita(id);
     setTimeout(() => {
-      this.editarPaciente.nativeElement.showModal();
+      this.editarCita.nativeElement.showModal();
       this.update = false;
     }, 500);
   }
 
-  @ViewChild('agregarCita') agregarCita!: ElementRef;
+  @ViewChild('agregarReceta') agregarReceta!: ElementRef;
 
-  abrirModalCita(id: any, nombre: string, apellidoPaterno: string, apellidoMaterno: string) {
-    this.agregarCita.nativeElement.showModal();
+  abrirModalReceta(idP: any, idC: any, nombre: string, apellidoPaterno: string, apellidoMaterno: string) {
+    this.agregarReceta.nativeElement.showModal();
 
-    this.FormularioCita.patchValue({
-      idPaciente: id,
+    this.FormularioA.patchValue({
+      idPaciente:idP,
+      idCita: idC,
       nombrePaciente: nombre,
       apellidoPaternoPaciente: apellidoPaterno,
       apellidoMaternoPaciente: apellidoMaterno,
@@ -103,51 +112,53 @@ export class PacientesComponent {
 
   //-------------------------------------------- Metodos --------------------------------------
 
-  obtenerPacientes(page: number = 1, search: string = ''): void {
+  obtenerCitasProximas(page: number = 1, search: string = ''): void {
     const queryParams = `page=${page}&pageSize=${this.perPage}&search=${search}`;
-    this.service.get(`paciente/getAll?${queryParams}`).subscribe((info: any) => {
+    this.service.get(`citas/getAllNext?${queryParams}`).subscribe((info: any) => {
       if (info) {
-        this.pacientes = info.data; 
+        this.citas = info.data; 
         this.total = info.pagination.total; 
         this.page = info.pagination.currentPage;
       }
     });
   }
-  
 
   onPageChange(page: number): void {
-    this.obtenerPacientes(page, this.currentSearch);
+    this.obtenerCitasProximas(page, this.currentSearch);
   }
-  
+
   onSearch(event: Event): void {
     const search = (event.target as HTMLInputElement).value;
     this.currentSearch = search;
-    this.obtenerPacientes(1, search);
+    this.obtenerCitasProximas(1, search);
   }
-  
 
-  obtenerUnPaciente(id: any) {
-    this.service.get(`paciente/getOne/${id}`).subscribe((info: any) => {
+  obtenerUnaCita(id: any) {
+    this.service.get(`citas/getOne/${id}`).subscribe((info: any) => {
 
       if (info.error == false) {
         this.FormularioE.patchValue({
           id: info.data.id,
-          nombre: info.data.nombre,
-          apellidoPaterno: info.data.apellidoPaterno,
-          apellidoMaterno: info.data.apellidoMaterno,
-          fechaNacimiento: info.data.fechaNacimiento,
-          telefono: info.data.telefono,
-          correo: info.data.correo
+          idPaciente: info.data.idPaciente,
+          nombrePaciente: info.data.nombrePaciente,
+          apellidoPaternoPaciente: info.data.apellidoPaternoPaciente,
+          apellidoMaternoPaciente: info.data.apellidoMaternoPaciente,
+          motivo: info.data.motivo,
+          fecha: info.data.fecha,
+          hora: info.data.hora,
+          estado: info.data.estado
         });
 
-        this.pacienteSolo = info.data.id;
+        this.citaSola = info.data.id;
       }
     })
   }
 
   actualizarPaciente(id: any) {
 
-    this.service.put(`paciente/update/${id}`, this.FormularioE.value).subscribe((info: any) => {
+    this.service.put(`citas/update/${id}`, this.FormularioE.value).subscribe((info: any) => {
+
+      console.log(this.FormularioE.value);
 
       if (info.error == false) {
 
@@ -176,12 +187,13 @@ export class PacientesComponent {
 
   }
 
-  agregarPaciente() {
+  agregarConsulta() {
 
-    this.service.post('paciente/insert', this.FormularioA.value).subscribe((info: any) => {
-
+    this.service.post('consulta/insert', this.FormularioA.value).subscribe((info: any) => {
+      
       if (info.error == false) {
-
+        console.log(info.data);
+        
         Swal.fire({
           icon: "success",
           title: "Exito",
@@ -189,10 +201,9 @@ export class PacientesComponent {
           showConfirmButton: false,
           timer: 1500
         });
-
+        
         setTimeout(() => {
           location.reload();
-         
         }, 1500);
       }
       else {
@@ -208,7 +219,7 @@ export class PacientesComponent {
 
   }
 
-  eliminarPaciente(id: any) {
+  eliminarCita(id: any) {
 
     Swal.fire({
       title: "¿Quieres eliminar este registro?",
@@ -222,7 +233,7 @@ export class PacientesComponent {
     }).then((result) => {
       if (result.isConfirmed) {
 
-        this.service.delete(`paciente/delete/${id}`).subscribe((info: any) => {
+        this.service.delete(`citas/delete/${id}`).subscribe((info: any) => {
 
           if (info.error == false) {
             Swal.fire({
@@ -254,36 +265,6 @@ export class PacientesComponent {
 
   }
 
-  crearCita() {
-    this.service.post('citas/insert', this.FormularioCita.value).subscribe((info: any) => {
-
-      if (info.error == false) {
-        console.log(info.data);
-
-        Swal.fire({
-          icon: "success",
-          title: "Exito",
-          text: "Registro creado con exito",
-          showConfirmButton: false,
-          timer: 1500
-        });
-
-        setTimeout(() => {
-          location.reload();
-        }, 1500);
-      }
-      else {
-        Swal.fire({
-          icon: "error",
-          title: "Upsss",
-          text: "Hubo un error al intentar crear el registro, intentelo de nuevo",
-          showConfirmButton: false,
-          timer: 1500
-        });
-      };
-    });
-
-  }
 
   //-------------------------------------------- Valdacion de campos --------------------------------------
 
@@ -293,10 +274,6 @@ export class PacientesComponent {
 
   campoValidoEditar(campo: string) {
     return this.FormularioE.controls[campo].errors && this.FormularioE.controls[campo].touched;
-  };
-
-  campoValidoCita(campo: string) {
-    return this.FormularioCita.controls[campo].errors && this.FormularioCita.controls[campo].touched;
   };
 
 }

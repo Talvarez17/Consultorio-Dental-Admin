@@ -16,7 +16,11 @@ export class CitasComponent {
   date = new Date();
   citas: any = [];
   citaSola: any = [];
-  save: boolean = true;
+  page = 1;
+  total = 0;
+  perPage = 3;
+  currentSearch: string = '';
+  update = false;
 
 
   horaActual() {
@@ -57,7 +61,7 @@ export class CitasComponent {
   constructor(public router: Router, private fb: FormBuilder, public service: ConexionService) {
   }
 
-  ngOnInit() { this.obtenerCitas() }
+  ngOnInit() { this.obtenerCitasHoy() }
 
   //-------------------------------------------- Formato de la hora y esatus --------------------------------------
   formatoHora(hora: string): string {
@@ -86,9 +90,11 @@ export class CitasComponent {
   @ViewChild('editarCita') editarCita!: ElementRef;
 
   abrirModalEditar(id: any) {
+    this.update = true;
     this.obtenerUnaCita(id);
     setTimeout(() => {
       this.editarCita.nativeElement.showModal();
+      this.update = false;
     }, 500);
   }
 
@@ -98,23 +104,96 @@ export class CitasComponent {
     this.agregarReceta.nativeElement.showModal();
 
     this.FormularioA.patchValue({
-      idPaciente:idP,
+      idPaciente: idP,
       idCita: idC,
       nombrePaciente: nombre,
       apellidoPaternoPaciente: apellidoPaterno,
       apellidoMaternoPaciente: apellidoMaterno,
+      motivo: [, [Validators.required, Validators.maxLength(50), Validators.minLength(2)]],
+      fecha: [, Validators.required],
+      hora: [, Validators.required],
+      estado: [, Validators.required]
     });
   }
 
   //-------------------------------------------- Metodos --------------------------------------
 
-  obtenerCitas() {
-    this.service.get('citas/getAll').subscribe((info: any) => {
+  marcarCompletada(idP: any, idC: any, nombre: string, apellidoPaterno: string, apellidoMaterno: string, motivo: string, fecha: any, hora: any) {
+    this.FormularioE.patchValue({
+      id: idC,
+      idPaciente: idP,
+      nombrePaciente: nombre,
+      apellidoPaternoPaciente: apellidoPaterno,
+      apellidoMaternoPaciente: apellidoMaterno,
+      motivo: motivo,
+      fecha: fecha,
+      hora: hora,
+      estado: 2
+    });
 
+    Swal.fire({
+      title: "¿Quieres marcar como completada esta cita?",
+      text: "Se cambiara su estado",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#14B8A6",
+      cancelButtonColor: "#EF4444",
+      confirmButtonText: "Aceptar",
+      cancelButtonText: "Cancelar"
+    }).then((result) => {
+      if (result.isConfirmed) {
+
+        this.service.put(`citas/update/${idC}`, this.FormularioE.value).subscribe((info: any) => {
+
+          if (info.error == false) {
+            Swal.fire({
+              icon: "success",
+              title: "Exito",
+              text: "Registro actualizado con exito",
+              showConfirmButton: false,
+              timer: 1500
+            });
+
+            setTimeout(() => {
+              location.reload();
+            }, 1500);
+
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "Upsss",
+              text: "Hubo un error al intentar actualizar el registro, intentelo de nuevo",
+              showConfirmButton: false,
+              timer: 1500
+            });
+
+          }
+        })
+
+      }
+    });
+
+  }
+
+  obtenerCitasHoy(page: number = 1, search: string = ''): void {
+    const queryParams = `page=${page}&pageSize=${this.perPage}&search=${search}`;
+    this.service.get(`citas/getAllToday?${queryParams}`).subscribe((info: any) => {
       if (info) {
         this.citas = info.data;
+        this.total = info.pagination.total;
+        this.page = info.pagination.currentPage;
       }
-    })
+    });
+  }
+
+  onPageChange(page: number): void {
+    this.obtenerCitasHoy(page, this.currentSearch);
+  }
+
+  onSearch(event: Event): void {
+    const search = (event.target as HTMLInputElement).value;
+    this.currentSearch = search;
+    this.obtenerCitasHoy(1, search);
   }
 
   obtenerUnaCita(id: any) {
@@ -138,7 +217,7 @@ export class CitasComponent {
     })
   }
 
-  actualizarPaciente(id: any) {
+  actualizarCita(id: any) {
 
     this.service.put(`citas/update/${id}`, this.FormularioE.value).subscribe((info: any) => {
 
@@ -173,12 +252,11 @@ export class CitasComponent {
 
   agregarConsulta() {
 
-    this.save = false;
     this.service.post('consulta/insert', this.FormularioA.value).subscribe((info: any) => {
-      
+
       if (info.error == false) {
         console.log(info.data);
-        
+
         Swal.fire({
           icon: "success",
           title: "Exito",
@@ -186,10 +264,9 @@ export class CitasComponent {
           showConfirmButton: false,
           timer: 1500
         });
-        
+
         setTimeout(() => {
           location.reload();
-          this.save = true;
         }, 1500);
       }
       else {

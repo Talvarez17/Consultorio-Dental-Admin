@@ -2,7 +2,6 @@
 
   <div class="navbar-start">
 
-    <!-- Dropdown -->
     <div class="dropdown">
       <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -10,24 +9,41 @@
         </svg>
       </div>
       <ul tabindex="0" class="menu menu-sm dropdown-content bg-teal-200 rounded-box z-[1] mt-3 w-52 p-2 shadow">
-        <li class="text-black" [routerLink]="['/pacientes']"><a>Pacientes</a></li>
-        <li class="text-black" [routerLink]="['/citas']"><a>Citas</a></li>
-        <li class="text-black" [routerLink]="['/consultas']"><a>Recetas</a></li>
+        <li class="text-black active:bg-teal-100" [routerLink]="['/pacientes']" routerLinkActive="bg-teal-300 rounded-md">
+          <a>Pacientes</a>
+        </li>
+        <li class="text-black active:bg-teal-100" [routerLink]="['/citas']" routerLinkActive="bg-teal-300 rounded-md">
+          <a>Citas de hoy</a>
+        </li>
+        <li class="text-black active:bg-teal-100" [routerLink]="['/proximas']" routerLinkActive="bg-teal-300 rounded-md">
+          <a>Próximas citas</a>
+        </li>
       </ul>
     </div>
 
-    <a [routerLink]="['/pacientes']" class="btn btn-ghost"><img src="../../../assets/logosf.png" height="50" width="50"></a>
+    <a [routerLink]="['/pacientes']" class="btn btn-ghost">
+      <img src="../../../assets/logosf.png" height="50" width="50">
+    </a>
 
   </div>
+
   <div class="navbar-center hidden lg:flex">
     <ul class="menu menu-horizontal px-1 text-base">
-      <li class="text-black" [routerLink]="['/pacientes']"><a>Pacientes</a></li>
-      <li class="text-black" [routerLink]="['/citas']"><a>Citas</a></li>
-      <li class="text-black" [routerLink]="['/consultas']"><a>Recetas</a></li>
+      <li class="text-black" [routerLink]="['/pacientes']" routerLinkActive="bg-teal-300 rounded-md">
+        <a>Pacientes</a>
+      </li>
+      <li class="text-black" [routerLink]="['/citas']" routerLinkActive="bg-teal-300 rounded-md">
+        <a>Citas de hoy</a>
+      </li>
+      <li class="text-black" [routerLink]="['/proximas']" routerLinkActive="bg-teal-300 rounded-md">
+        <a>Próximas citas</a>
+      </li>
     </ul>
   </div>
 
   <div class="navbar-end">
-    <a (click)="salir()" [routerLink]="['/login']" class="btn rounded-md border-0 bg-teal-500 hover:bg-gray-300 hover:border-grbg-gray-300">Salir</a>
+    <a (click)="salir()" [routerLink]="['/login']"
+      class="btn rounded-md border-0 bg-teal-500 hover:bg-gray-300">Salir</a>
   </div>
+
 </div>

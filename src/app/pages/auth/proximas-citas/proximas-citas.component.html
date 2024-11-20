@@ -73,15 +73,6 @@
                 </div>Acciones
             </div>
             <div class="flex flex-row flex-wrap">
-                <button [disabled]="cita.estado == 2"
-                    (click)="marcarCompletada(cita.idPaciente, cita.id, cita.nombrePaciente, cita.apellidoPaternoPaciente, cita.apellidoMaternoPaciente, cita.motivo, cita.fecha, cita.hora)"
-                    title="Marcar completada"
-                    class="btn m-1 bg-green-500 text-white rounded-md hover:bg-green-300 hover:border-teal-300"><svg
-                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                        stroke="currentColor" class="size-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
-                    </svg>
-                </button>
                 <button
                     (click)="abrirModalReceta(cita.idPaciente, cita.id, cita.nombrePaciente, cita.apellidoPaternoPaciente, cita.apellidoMaternoPaciente)"
                     title="Agregar consulta"
@@ -112,8 +103,7 @@
             </div>
         </div>
     </div>
-    <pagination-controls [previousLabel]="'Anterior'" [nextLabel]="'Siguiente'"
-        (pageChange)="onPageChange($event)"></pagination-controls>
+    <pagination-controls [previousLabel]="'Anterior'" [nextLabel]="'Siguiente'" (pageChange)="onPageChange($event)"></pagination-controls>
 </div>
 
 <!-- Modal para editar -->
@@ -165,7 +155,7 @@
             <form method="dialog">
                 <button
                     class="btn bg-red-500 text-white rounded-md hover:bg-red-300 hover:border-red-300 m-1">Cancelar</button>
-                <button (click)="actualizarCita(citaSola)" [disabled]="!FormularioE.valid"
+                <button (click)="actualizarPaciente(citaSola)" [disabled]="!FormularioE.valid"
                     class="btn bg-teal-500 text-white rounded-md hover:bg-teal-300 hover:border-teal-300">Guardar</button>
             </form>
 
