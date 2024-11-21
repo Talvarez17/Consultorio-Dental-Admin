@@ -6,10 +6,12 @@
 
 <div class="overflow-x-auto flex justify-center flex-wrap">
 
-    <!-- <button (click)="regresar()"
-        class="btn m-1 bg-teal-500 text-white rounded-md hover:bg-teal-300 hover:border-teal-300">
-        Regresar
-    </button> -->
+    <div class="z-20">
+        <button (click)="regresar()"
+            class="btn m-1 bg-teal-500 text-white rounded-md hover:bg-teal-300 hover:border-teal-300">
+            Regresar
+        </button>
+    </div>
 
     <div *ngIf="recetas.length === 0"
         class="stats stats-vertical lg:stats-horizontal shadow border-teal-400 border-2 w-11/12 hover:border-teal-700 cursor-pointer my-1">
