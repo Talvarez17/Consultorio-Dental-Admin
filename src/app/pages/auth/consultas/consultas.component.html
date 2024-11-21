@@ -1,26 +1,52 @@
 <app-navbar></app-navbar>
 
+<div *ngIf="update" class="fixed inset-0 flex justify-center items-center bg-slate-400 bg-opacity-75 z-50">
+    <span class="loading loading-dots loading-lg"></span>
+</div>
+
 <div class="overflow-x-auto flex justify-center flex-wrap">
 
-    <div *ngFor="let receta of recetas" class="card bg-base-100 w-96 shadow-xl border-teal-400 border-2 hover:border-teal-700 cursor-pointer m-2">
+    <!-- <button (click)="regresar()"
+        class="btn m-1 bg-teal-500 text-white rounded-md hover:bg-teal-300 hover:border-teal-300">
+        Regresar
+    </button> -->
+
+    <div *ngIf="recetas.length === 0"
+        class="stats stats-vertical lg:stats-horizontal shadow border-teal-400 border-2 w-11/12 hover:border-teal-700 cursor-pointer my-1">
+        <div class="stat place-items-center">
+            <div class="text-black text-lg font-bold flex justify-center">
+                <div class="mx-2 stat-figure text-secondary">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                        <path
+                            d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z" />
+                    </svg>
+                </div> Esta cita no tiene recetas
+            </div>
+            <div class="text-black text-base font-normal">Agenda una desde el historial de citas o citas de hoy</div>
+        </div>
+    </div>
+
+    <div *ngFor="let receta of recetas | paginate: { itemsPerPage: perPage, currentPage: page, totalItems: total }"
+        class="card bg-base-100 w-96 shadow-xl border-teal-400 border-2 hover:border-teal-700 cursor-pointer m-2">
         <div class="card-body">
 
-            <h2 class="card-title">{{receta.nombrePaciente}} {{receta.apellidoPaternoPaciente}} {{receta.apellidoMaternoPaciente}}</h2>
+            <h2 class="card-title">{{receta.nombrePaciente}} {{receta.apellidoPaternoPaciente}}
+                {{receta.apellidoMaternoPaciente}}</h2>
             <p class="text-sm text-gray-600">{{receta.idPaciente}}</p>
             <hr class="text-black border-2">
             <h2 class="card-title">Prescripción</h2>
             <p class="text-sm text-gray-600 whitespace-pre-line">{{receta.prescripcion}}</p>
             <hr class="text-black border-2">
             <h2 class="card-title">Recomendaciones</h2>
-            <p class="text-sm text-gray-600 whitespace-pre-line" >{{receta.recomendaciones}}</p>
+            <p class="text-sm text-gray-600 whitespace-pre-line">{{receta.recomendaciones}}</p>
             <hr class="text-black border-2">
             <h2 class="card-title">Fecha</h2>
             <div class="flex justify-center">
-                <p class="text-sm text-gray-600 whitespace-pre-line w-1/2" >{{receta.fecha | date:'mediumDate'}}</p>
-                <p class="text-sm text-gray-600 whitespace-pre-line w-1/2" >{{formatoHora(receta.hora)}}</p>
+                <p class="text-sm text-gray-600 whitespace-pre-line w-1/2">{{receta.fecha | date:'mediumDate'}}</p>
+                <p class="text-sm text-gray-600 whitespace-pre-line w-1/2">{{formatoHora(receta.hora)}}</p>
             </div>
             <hr class="text-black border-2">
-            
+
 
             <div class="card-actions justify-end">
                 <button (click)="abrirModalEditar(receta.id)" title="Editar registro"
@@ -41,7 +67,10 @@
             </div>
         </div>
     </div>
-
+</div>
+<div class="flex justify-center my-1">
+    <pagination-controls [previousLabel]="'Anterior'" [nextLabel]="'Siguiente'"
+        (pageChange)="onPageChange($event)"></pagination-controls>
 </div>
 
 
@@ -55,8 +84,10 @@
             <div class="flex flex-row justify-center mt-2">
                 <div class="mx-1 w-full">
                     <label class="block text-center text-black">Prescripcion</label>
-                    <textarea type="text" class="w-full rounded-md py-2 px-3 flex-auto" placeholder="Escriba la prescripción del paciente" formControlName="prescripcion"></textarea>
-                    <p class="font-size: small text-red-600" *ngIf="campoValidoEditar('prescripcion')">Este campo es requerido
+                    <textarea type="text" class="w-full rounded-md py-2 px-3 flex-auto"
+                        placeholder="Escriba la prescripción del paciente" formControlName="prescripcion"></textarea>
+                    <p class="font-size: small text-red-600" *ngIf="campoValidoEditar('prescripcion')">Este campo es
+                        requerido
                     </p>
                 </div>
             </div>
@@ -64,8 +95,11 @@
             <div class="flex flex-row justify-center mt-2">
                 <div class="mx-1 w-full">
                     <label class="block text-center text-black">Recomendaciones</label>
-                    <textarea type="text" class="w-full rounded-md py-2 px-3 flex-auto" placeholder="Escriba las recomendaciones del paciente" formControlName="recomendaciones"></textarea>
-                    <p class="font-size: small text-red-600" *ngIf="campoValidoEditar('recomendaciones')">Este campo es requerido
+                    <textarea type="text" class="w-full rounded-md py-2 px-3 flex-auto"
+                        placeholder="Escriba las recomendaciones del paciente"
+                        formControlName="recomendaciones"></textarea>
+                    <p class="font-size: small text-red-600" *ngIf="campoValidoEditar('recomendaciones')">Este campo es
+                        requerido
                     </p>
                 </div>
             </div>

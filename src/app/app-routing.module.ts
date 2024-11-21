@@ -16,7 +16,7 @@ const routes: Routes = [
       { path: "citas", component: CitasComponent, canActivate: [AuthGuard] },
       { path: "proximas", component: ProximasCitasComponent, canActivate: [AuthGuard] },
       { path: "citasPaciente/:idPaciente", component: CitasPacienteComponent, canActivate: [AuthGuard] },
-      { path: "recetas/:idPaciente", component: ConsultasComponent, canActivate: [AuthGuard] },
+      { path: "recetas/:idCita", component: ConsultasComponent, canActivate: [AuthGuard] },
 
       { path: "**", redirectTo: "login" },
     ]

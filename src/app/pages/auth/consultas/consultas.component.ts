@@ -1,6 +1,7 @@
+import { Location } from '@angular/common';
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ConexionService } from 'src/app/services/conexion.service';
 import Swal from 'sweetalert2'
 
@@ -13,6 +14,11 @@ export class ConsultasComponent {
 
   recetas: any = [];
   recetaSola: any = [];
+  page = 1;
+  total = 0;
+  perPage = 3;
+  update = false;
+  cita = '';
 
   // --------------------------------------------- Formularios -------------------------------------------------------------------
 
@@ -29,10 +35,14 @@ export class ConsultasComponent {
     recomendaciones: [, [Validators.required, Validators.minLength(2)]],
   });
 
-  constructor(public router: Router, private fb: FormBuilder, public service: ConexionService) {
+  constructor(public router: Router, private fb: FormBuilder, public service: ConexionService, private activeRoute: ActivatedRoute, private location: Location) {
   }
 
-  ngOnInit() { this.obtenerRecetas() }
+  ngOnInit() {
+    const idCita = this.activeRoute.snapshot.params['idCita'];
+    this.cita = idCita;
+    this.obtenerRecetasCita(idCita);
+  }
 
   //-------------------------------------------- Formato de la hora--------------------------------------
   formatoHora(hora: string): string {
@@ -47,19 +57,35 @@ export class ConsultasComponent {
   @ViewChild('editarReceta') editarReceta!: ElementRef;
 
   abrirModalEditar(id: any) {
-    this.editarReceta.nativeElement.showModal();
+    this.update = true;
     this.obtenerUnaReceta(id);
+    setTimeout(() => {
+      this.editarReceta.nativeElement.showModal();
+      this.update = false;
+    }, 500);
   }
 
-  //-------------------------------------------- Calculo de la edad del paciente --------------------------------------
+  //-------------------------------------------- Metodos --------------------------------------
 
-  obtenerRecetas() {
-    this.service.get('consulta/getAll').subscribe((info: any) => {
+  regresar() {
+    this.location.back(); // Regresa a la página anterior
+  }
 
+  //-------------------------------------------- Metodos --------------------------------------
+
+  obtenerRecetasCita(id: any = '', page: number = 1): void {
+    const queryParams = `id=${id}&page=${page}&pageSize=${this.perPage}`;
+    this.service.get(`consulta/getAllRecetas?${queryParams}`).subscribe((info: any) => {
       if (info) {
         this.recetas = info.data;
+        this.total = info.total;
+        this.page = info.currentPage;
       }
-    })
+    });
+  }
+
+  onPageChange(page: number): void {
+    this.obtenerRecetasCita(this.cita, page);
   }
 
   obtenerUnaReceta(id: any) {
