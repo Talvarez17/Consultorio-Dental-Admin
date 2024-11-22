@@ -19,7 +19,13 @@ export class LoginComponent {
   constructor(public router: Router, private fb: FormBuilder, public service: ConexionService) {
  }
 
-  ngOnInit() { }
+  ngOnInit() { 
+
+    if (localStorage.getItem("id")) {
+      this.router.navigate(['/pacientes']);
+    }
+    
+  }
 
   login() {
 

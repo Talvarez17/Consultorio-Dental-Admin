@@ -31,6 +31,14 @@ export class CitasPacienteComponent {
     return tiempo;
   }
 
+  diaActual(): string {
+    const hoy = new Date();
+    const year = hoy.getFullYear();
+    const month = String(hoy.getMonth() + 1).padStart(2, '0');
+    const day = String(hoy.getDate()).padStart(2, '0');
+  
+    return `${year}-${month}-${day}`;
+  }
 
   // --------------------------------------------- Formularios -------------------------------------------------------------------
   FormularioA: FormGroup = this.fb.group({
@@ -40,7 +48,7 @@ export class CitasPacienteComponent {
     nombrePaciente: [],
     apellidoPaternoPaciente: [],
     apellidoMaternoPaciente: [],
-    fecha: this.date.toISOString().split('T')[0],
+    fecha: this.diaActual(),
     hora: this.horaActual(),
     prescripcion: [, [Validators.required, Validators.minLength(2)]],
     recomendaciones: [, [Validators.required, Validators.minLength(2)]],
@@ -254,7 +262,7 @@ export class CitasPacienteComponent {
     this.service.post('consulta/insert', this.FormularioA.value).subscribe((info: any) => {
 
       if (info.error == false) {
-        console.log(info.data);
+        this.FormularioA.reset();
 
         Swal.fire({
           icon: "success",

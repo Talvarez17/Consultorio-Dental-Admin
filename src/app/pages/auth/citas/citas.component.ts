@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { ConexionService } from 'src/app/services/conexion.service';
 import { v4 as uuidv4 } from 'uuid';
 import Swal from 'sweetalert2'
+import { format, toDate } from 'date-fns-tz';
+
 
 @Component({
   selector: 'app-citas',
@@ -27,8 +29,16 @@ export class CitasComponent {
     const hora = this.date.getHours().toString().padStart(2, '0');
     const minutos = this.date.getMinutes().toString().padStart(2, '0');
     const tiempo = `${hora}:${minutos}`;
-
     return tiempo;
+  }
+
+  diaActual(): string {
+    const hoy = new Date();
+    const year = hoy.getFullYear();
+    const month = String(hoy.getMonth() + 1).padStart(2, '0');
+    const day = String(hoy.getDate()).padStart(2, '0');
+  
+    return `${year}-${month}-${day}`;
   }
 
 
@@ -40,7 +50,7 @@ export class CitasComponent {
     nombrePaciente: [],
     apellidoPaternoPaciente: [],
     apellidoMaternoPaciente: [],
-    fecha: this.date.toISOString().split('T')[0],
+    fecha: this.diaActual(),
     hora: this.horaActual(),
     prescripcion: [, [Validators.required, Validators.minLength(2)]],
     recomendaciones: [, [Validators.required, Validators.minLength(2)]],
@@ -251,8 +261,8 @@ export class CitasComponent {
     this.service.post('consulta/insert', this.FormularioA.value).subscribe((info: any) => {
 
       if (info.error == false) {
-        console.log(info.data);
 
+        this.FormularioA.reset();
         Swal.fire({
           icon: "success",
           title: "Exito",

@@ -181,6 +181,7 @@ export class PacientesComponent {
     this.service.post('paciente/insert', this.FormularioA.value).subscribe((info: any) => {
 
       if (info.error == false) {
+        this.FormularioA.reset();
 
         Swal.fire({
           icon: "success",
@@ -258,7 +259,8 @@ export class PacientesComponent {
     this.service.post('citas/insert', this.FormularioCita.value).subscribe((info: any) => {
 
       if (info.error == false) {
-        console.log(info.data);
+
+        this.FormularioA.reset();
 
         Swal.fire({
           icon: "success",

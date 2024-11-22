@@ -72,14 +72,15 @@ export class ConsultasComponent {
   }
 
   //-------------------------------------------- Metodos --------------------------------------
-
   obtenerRecetasCita(id: any = '', page: number = 1): void {
     const queryParams = `id=${id}&page=${page}&pageSize=${this.perPage}`;
     this.service.get(`consulta/getAllRecetas?${queryParams}`).subscribe((info: any) => {
       if (info) {
-        this.recetas = info.data;
-        this.total = info.total;
-        this.page = info.currentPage;
+        this.recetas = info.data; 
+        const pagination = info.pagination; 
+        this.total = pagination.total;
+        this.page = pagination.currentPage;
+        this.perPage = pagination.perPage;
       }
     });
   }
@@ -87,6 +88,7 @@ export class ConsultasComponent {
   onPageChange(page: number): void {
     this.obtenerRecetasCita(this.cita, page);
   }
+  
 
   obtenerUnaReceta(id: any) {
     this.service.get(`consulta/getOne/${id}`).subscribe((info: any) => {
