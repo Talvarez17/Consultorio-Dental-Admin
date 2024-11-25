@@ -233,7 +233,7 @@
         </form>
         <div class="modal-action">
             <form method="dialog">
-                <button
+                <button (click)="reset()"
                     class="btn bg-red-500 text-white rounded-md hover:bg-red-300 hover:border-red-300 m-1">Cancelar</button>
                 <button [disabled]="!FormularioA.valid" (click)="agregarConsulta()"
                     class="btn bg-teal-500 text-white rounded-md hover:bg-teal-300 hover:border-teal-300">Guardar</button>

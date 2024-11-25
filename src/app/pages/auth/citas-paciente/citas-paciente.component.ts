@@ -125,6 +125,10 @@ export class CitasPacienteComponent {
 
   //-------------------------------------------- Metodos --------------------------------------
 
+  reset(){
+    this.FormularioA.reset();
+  }
+
   marcarCompletada(idP: any, idC: any, nombre: string, apellidoPaterno: string, apellidoMaterno: string, motivo: string, fecha: any, hora: any) {
     this.FormularioE.patchValue({
       id: idC,

@@ -103,6 +103,11 @@ export class PacientesComponent {
 
   //-------------------------------------------- Metodos --------------------------------------
 
+  reset(){
+    this.FormularioA.reset();
+    this.FormularioCita.reset();
+  }
+
   obtenerPacientes(page: number = 1, search: string = ''): void {
     const queryParams = `page=${page}&pageSize=${this.perPage}&search=${search}`;
     this.service.get(`paciente/getAll?${queryParams}`).subscribe((info: any) => {
@@ -182,7 +187,6 @@ export class PacientesComponent {
 
       if (info.error == false) {
         this.FormularioA.reset();
-
         Swal.fire({
           icon: "success",
           title: "Exito",
@@ -197,6 +201,7 @@ export class PacientesComponent {
         }, 1500);
       }
       else {
+        this.FormularioA.reset();
         Swal.fire({
           icon: "error",
           title: "Upsss",
@@ -259,9 +264,7 @@ export class PacientesComponent {
     this.service.post('citas/insert', this.FormularioCita.value).subscribe((info: any) => {
 
       if (info.error == false) {
-
-        this.FormularioA.reset();
-
+        this.FormularioCita.reset();
         Swal.fire({
           icon: "success",
           title: "Exito",
@@ -271,6 +274,7 @@ export class PacientesComponent {
         });
       }
       else {
+        this.FormularioCita.reset();
         Swal.fire({
           icon: "error",
           title: "Upsss",
