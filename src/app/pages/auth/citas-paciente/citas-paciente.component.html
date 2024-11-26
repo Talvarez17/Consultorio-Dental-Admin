@@ -7,7 +7,8 @@
 <div class="overflow-x-auto flex justify-center flex-wrap">
 
     <div class="my-2 w-11/12 flex justify-center items-center">
-        <button [routerLink]="['/pacientes']" class="w-auto grow btn m-1 bg-teal-500 text-white rounded-md hover:bg-teal-300 hover:border-teal-300">Regresar</button>
+        <button [routerLink]="['/pacientes']"
+            class="w-auto grow btn m-1 bg-teal-500 text-white rounded-md hover:bg-teal-300 hover:border-teal-300">Regresar</button>
         <label class="input input-bordered rounded-md flex items-center gap-2 w-11/12 mx-1">
             <input type="text" (input)="onSearch($event)" class="grow" placeholder="Buscar motivo" />
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="h-4 w-4 opacity-70">
@@ -100,7 +101,7 @@
                     </svg>
                 </button>
                 <button [routerLink]="['/recetas', cita.id]" title="Ver recetas"
-                    class="btn btn-sm sm:btn-sm md:btn-md lg:btn-md m-0.5 bg-blue-500 text-white rounded-md hover:bg-blue-300 hover:border-teal-300"><svg
+                    class="btn btn-sm sm:btn-sm md:btn-md lg:btn-md m-0.5 bg-blue-500 text-white rounded-md hover:bg-blue-300 hover:border-blue-300"><svg
                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
                         <path fill-rule="evenodd"
                             d="M5.625 1.5c-1.036 0-1.875.84-1.875 1.875v17.25c0 1.035.84 1.875 1.875 1.875h12.75c1.035 0 1.875-.84 1.875-1.875V12.75A3.75 3.75 0 0 0 16.5 9h-1.875a1.875 1.875 0 0 1-1.875-1.875V5.25A3.75 3.75 0 0 0 9 1.5H5.625ZM7.5 15a.75.75 0 0 1 .75-.75h7.5a.75.75 0 0 1 0 1.5h-7.5A.75.75 0 0 1 7.5 15Zm.75 2.25a.75.75 0 0 0 0 1.5H12a.75.75 0 0 0 0-1.5H8.25Z"
@@ -181,7 +182,10 @@
                 </div>
                 <div class="mx-1 w-1/2">
                     <label class="block text-center text-black">Hora</label>
-                    <input type="time" class="w-full rounded-md py-2 px-3 flex-auto" formControlName="hora">
+                    <select class="w-full rounded-md py-2 px-3 flex-auto" formControlName="hora">
+                        <option value="" disabled selected>Selecciona una hora</option>
+                        <option *ngFor="let hora of horas" [value]="hora">{{ hora }}</option>
+                    </select>
                     <p class="font-size: small text-red-600" *ngIf="campoValidoEditar('hora')">Este campo es requerido
                     </p>
                 </div>

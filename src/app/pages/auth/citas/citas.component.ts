@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { ConexionService } from 'src/app/services/conexion.service';
 import { v4 as uuidv4 } from 'uuid';
 import Swal from 'sweetalert2'
-import { format, toDate } from 'date-fns-tz';
 
 
 @Component({
@@ -23,7 +22,7 @@ export class CitasComponent {
   perPage = 3;
   currentSearch: string = '';
   update = false;
-
+  horas: string[] = [];
 
   horaActual() {
     const hora = this.date.getHours().toString().padStart(2, '0');
@@ -37,7 +36,7 @@ export class CitasComponent {
     const year = hoy.getFullYear();
     const month = String(hoy.getMonth() + 1).padStart(2, '0');
     const day = String(hoy.getDate()).padStart(2, '0');
-  
+
     return `${year}-${month}-${day}`;
   }
 
@@ -71,7 +70,18 @@ export class CitasComponent {
   constructor(public router: Router, private fb: FormBuilder, public service: ConexionService) {
   }
 
-  ngOnInit() { this.obtenerCitasHoy() }
+  ngOnInit() {
+    this.obtenerCitasHoy()
+    const inicio = 9;
+    const fin = 19;
+    const intervalo = 15;
+    for (let h = inicio; h <= fin; h++) {
+      for (let m = 0; m < 60; m += intervalo) {
+        const hora = `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`;
+        this.horas.push(hora);
+      }
+    }
+  }
 
   //-------------------------------------------- Formato de la hora y esatus --------------------------------------
   formatoHora(hora: string): string {
@@ -203,9 +213,10 @@ export class CitasComponent {
   }
 
   obtenerUnaCita(id: any) {
-    this.service.get(`citas/getOne/${id}`).subscribe((info: any) => {
+    this.service.get(`citas/getOne/${id}`).subscribe((info: any) => {      
 
       if (info.error == false) {
+        const horaFormateada = info.data.hora.slice(0, 5);
         this.FormularioE.patchValue({
           id: info.data.id,
           idPaciente: info.data.idPaciente,
@@ -214,7 +225,7 @@ export class CitasComponent {
           apellidoMaternoPaciente: info.data.apellidoMaternoPaciente,
           motivo: info.data.motivo,
           fecha: info.data.fecha,
-          hora: info.data.hora,
+          hora: horaFormateada,
           estado: info.data.estado
         });
 
@@ -226,8 +237,6 @@ export class CitasComponent {
   actualizarCita(id: any) {
 
     this.service.put(`citas/update/${id}`, this.FormularioE.value).subscribe((info: any) => {
-
-      console.log(this.FormularioE.value);
 
       if (info.error == false) {
 

@@ -69,9 +69,11 @@
             </div>
             <div class="flex flex-row flex-wrap">
                 <button [routerLink]="['/citasPaciente', paciente.id]" title="Ver historial"
-                    class="btn m-1 bg-blue-500 text-white rounded-md hover:bg-blue-300 hover:border-teal-300"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
-                        <path d="M19.906 9c.382 0 .749.057 1.094.162V9a3 3 0 0 0-3-3h-3.879a.75.75 0 0 1-.53-.22L11.47 3.66A2.25 2.25 0 0 0 9.879 3H6a3 3 0 0 0-3 3v3.162A3.756 3.756 0 0 1 4.094 9h15.812ZM4.094 10.5a2.25 2.25 0 0 0-2.227 2.568l.857 6A2.25 2.25 0 0 0 4.951 21H19.05a2.25 2.25 0 0 0 2.227-1.932l.857-6a2.25 2.25 0 0 0-2.227-2.568H4.094Z" />
-                      </svg>                      
+                    class="btn m-1 bg-blue-500 text-white rounded-md hover:bg-blue-300 hover:border-blue-300"><svg
+                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                        <path
+                            d="M19.906 9c.382 0 .749.057 1.094.162V9a3 3 0 0 0-3-3h-3.879a.75.75 0 0 1-.53-.22L11.47 3.66A2.25 2.25 0 0 0 9.879 3H6a3 3 0 0 0-3 3v3.162A3.756 3.756 0 0 1 4.094 9h15.812ZM4.094 10.5a2.25 2.25 0 0 0-2.227 2.568l.857 6A2.25 2.25 0 0 0 4.951 21H19.05a2.25 2.25 0 0 0 2.227-1.932l.857-6a2.25 2.25 0 0 0-2.227-2.568H4.094Z" />
+                    </svg>
                 </button>
                 <button
                     (click)="abrirModalCita(paciente.id, paciente.nombre, paciente.apellidoPaterno, paciente.apellidoMaterno)"
@@ -104,7 +106,8 @@
         </div>
 
     </div>
-    <pagination-controls [previousLabel]="'Anterior'" [nextLabel]="'Siguiente'" (pageChange)="onPageChange($event)"></pagination-controls>
+    <pagination-controls [previousLabel]="'Anterior'" [nextLabel]="'Siguiente'"
+        (pageChange)="onPageChange($event)"></pagination-controls>
 </div>
 
 <!-- Modal para agregar paciente -->
@@ -274,7 +277,10 @@
                 </div>
                 <div class="mx-1 w-1/2">
                     <label class="block text-center text-black">Hora</label>
-                    <input type="time" class="w-full rounded-md py-2 px-3 flex-auto" formControlName="hora">
+                    <select class="w-full rounded-md py-2 px-3 flex-auto" formControlName="hora">
+                        <option value="" disabled selected>Selecciona una hora</option>
+                        <option *ngFor="let hora of horas" [value]="hora">{{ hora }}</option>
+                    </select>
                     <p class="font-size: small text-red-600" *ngIf="campoValidoCita('hora')">Este campo es requerido</p>
                 </div>
             </div>

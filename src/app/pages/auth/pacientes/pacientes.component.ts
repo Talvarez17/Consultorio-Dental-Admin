@@ -20,7 +20,7 @@ export class PacientesComponent {
   perPage = 3;
   currentSearch: string = '';
   update = false;
-
+  horas: string[] = [];
 
   // --------------------------------------------- Formularios -------------------------------------------------------------------
   FormularioA: FormGroup = this.fb.group({
@@ -59,7 +59,18 @@ export class PacientesComponent {
   constructor(public router: Router, private fb: FormBuilder, public service: ConexionService) {
   }
 
-  ngOnInit() { this.obtenerPacientes() }
+  ngOnInit() {
+    this.obtenerPacientes()
+    const inicio = 9;
+    const fin = 19;
+    const intervalo = 15;
+    for (let h = inicio; h <= fin; h++) {
+      for (let m = 0; m < 60; m += intervalo) {
+        const hora = `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`;
+        this.horas.push(hora);
+      }
+    }
+  }
 
   //-------------------------------------------- Calculo de la edad del paciente --------------------------------------
   calcularEdad(fechaNacimiento: string): number {
@@ -103,7 +114,7 @@ export class PacientesComponent {
 
   //-------------------------------------------- Metodos --------------------------------------
 
-  reset(){
+  reset() {
     this.FormularioA.reset();
     this.FormularioCita.reset();
   }
@@ -112,24 +123,24 @@ export class PacientesComponent {
     const queryParams = `page=${page}&pageSize=${this.perPage}&search=${search}`;
     this.service.get(`paciente/getAll?${queryParams}`).subscribe((info: any) => {
       if (info) {
-        this.pacientes = info.data; 
-        this.total = info.pagination.total; 
+        this.pacientes = info.data;
+        this.total = info.pagination.total;
         this.page = info.pagination.currentPage;
       }
     });
   }
-  
+
 
   onPageChange(page: number): void {
     this.obtenerPacientes(page, this.currentSearch);
   }
-  
+
   onSearch(event: Event): void {
     const search = (event.target as HTMLInputElement).value;
     this.currentSearch = search;
     this.obtenerPacientes(1, search);
   }
-  
+
 
   obtenerUnPaciente(id: any) {
     this.service.get(`paciente/getOne/${id}`).subscribe((info: any) => {
@@ -197,7 +208,7 @@ export class PacientesComponent {
 
         setTimeout(() => {
           location.reload();
-         
+
         }, 1500);
       }
       else {

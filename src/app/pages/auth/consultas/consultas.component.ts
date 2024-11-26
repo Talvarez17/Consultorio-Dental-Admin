@@ -116,8 +116,6 @@ export class ConsultasComponent {
 
     this.service.put(`consulta/update/${id}`, this.FormularioE.value).subscribe((info: any) => {
 
-      console.log(this.FormularioE.value);
-
       if (info.error == false) {
 
         Swal.fire({

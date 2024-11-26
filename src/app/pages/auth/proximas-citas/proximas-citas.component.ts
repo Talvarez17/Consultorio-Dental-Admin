@@ -20,6 +20,7 @@ export class ProximasCitasComponent {
   perPage = 3;
   currentSearch: string = '';
   update = false;
+  horas: string[] = [];
 
   horaActual() {
     const hora = this.date.getHours().toString().padStart(2, '0');
@@ -47,7 +48,18 @@ export class ProximasCitasComponent {
   constructor(public router: Router, private fb: FormBuilder, public service: ConexionService) {
   }
 
-  ngOnInit() { this.obtenerCitasProximas() }
+  ngOnInit() {
+    this.obtenerCitasProximas()
+    const inicio = 9;
+    const fin = 19;
+    const intervalo = 15;
+    for (let h = inicio; h <= fin; h++) {
+      for (let m = 0; m < 60; m += intervalo) {
+        const hora = `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`;
+        this.horas.push(hora);
+      }
+    }
+  }
 
   //-------------------------------------------- Formato de la hora y esatus --------------------------------------
   formatoHora(hora: string): string {
@@ -90,8 +102,8 @@ export class ProximasCitasComponent {
     const queryParams = `page=${page}&pageSize=${this.perPage}&search=${search}`;
     this.service.get(`citas/getAllNext?${queryParams}`).subscribe((info: any) => {
       if (info) {
-        this.citas = info.data; 
-        this.total = info.pagination.total; 
+        this.citas = info.data;
+        this.total = info.pagination.total;
         this.page = info.pagination.currentPage;
       }
     });
@@ -110,7 +122,8 @@ export class ProximasCitasComponent {
   obtenerUnaCita(id: any) {
     this.service.get(`citas/getOne/${id}`).subscribe((info: any) => {
 
-      if (info.error == false) {
+      if (info.error == false) {        
+        const horaFormateada = info.data.hora.slice(0, 5);
         this.FormularioE.patchValue({
           id: info.data.id,
           idPaciente: info.data.idPaciente,
@@ -119,7 +132,7 @@ export class ProximasCitasComponent {
           apellidoMaternoPaciente: info.data.apellidoMaternoPaciente,
           motivo: info.data.motivo,
           fecha: info.data.fecha,
-          hora: info.data.hora,
+          hora: horaFormateada,
           estado: info.data.estado
         });
 
@@ -131,8 +144,6 @@ export class ProximasCitasComponent {
   actualizarCita(id: any) {
 
     this.service.put(`citas/update/${id}`, this.FormularioE.value).subscribe((info: any) => {
-
-      console.log(this.FormularioE.value);
 
       if (info.error == false) {
 

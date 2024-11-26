@@ -21,7 +21,7 @@ export class CitasPacienteComponent {
   currentSearch: string = '';
   update = false;
   paciente = '';
-
+  horas: string[] = [];
 
   horaActual() {
     const hora = this.date.getHours().toString().padStart(2, '0');
@@ -36,7 +36,7 @@ export class CitasPacienteComponent {
     const year = hoy.getFullYear();
     const month = String(hoy.getMonth() + 1).padStart(2, '0');
     const day = String(hoy.getDate()).padStart(2, '0');
-  
+
     return `${year}-${month}-${day}`;
   }
 
@@ -69,10 +69,20 @@ export class CitasPacienteComponent {
   constructor(public router: Router, private fb: FormBuilder, public service: ConexionService, private activeRoute: ActivatedRoute) {
   }
 
-  ngOnInit() { 
+  ngOnInit() {
     const idPaciente = this.activeRoute.snapshot.params['idPaciente'];
     this.paciente = idPaciente;
-    this.obtenerCitasPaciente(idPaciente) }
+    this.obtenerCitasPaciente(idPaciente)
+    const inicio = 9;
+    const fin = 19;
+    const intervalo = 15;
+    for (let h = inicio; h <= fin; h++) {
+      for (let m = 0; m < 60; m += intervalo) {
+        const hora = `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`;
+        this.horas.push(hora);
+      }
+    }
+  }
 
   //-------------------------------------------- Formato de la hora y esatus --------------------------------------
   formatoHora(hora: string): string {
@@ -125,7 +135,7 @@ export class CitasPacienteComponent {
 
   //-------------------------------------------- Metodos --------------------------------------
 
-  reset(){
+  reset() {
     this.FormularioA.reset();
   }
 
@@ -186,7 +196,7 @@ export class CitasPacienteComponent {
 
   }
 
-  obtenerCitasPaciente(id:any ='', page: number = 1, search: string = ''): void {
+  obtenerCitasPaciente(id: any = '', page: number = 1, search: string = ''): void {
     const queryParams = `id=${id}&page=${page}&pageSize=${this.perPage}&search=${search}`;
     this.service.get(`citas/getAllCitas?${queryParams}`).subscribe((info: any) => {
       if (info) {
@@ -198,19 +208,20 @@ export class CitasPacienteComponent {
   }
 
   onPageChange(page: number): void {
-    this.obtenerCitasPaciente(this.paciente,page, this.currentSearch);
+    this.obtenerCitasPaciente(this.paciente, page, this.currentSearch);
   }
 
   onSearch(event: Event): void {
     const search = (event.target as HTMLInputElement).value;
     this.currentSearch = search;
-    this.obtenerCitasPaciente(this.paciente,1, search);
+    this.obtenerCitasPaciente(this.paciente, 1, search);
   }
 
   obtenerUnaCita(id: any) {
     this.service.get(`citas/getOne/${id}`).subscribe((info: any) => {
 
       if (info.error == false) {
+        const horaFormateada = info.data.hora.slice(0, 5);
         this.FormularioE.patchValue({
           id: info.data.id,
           idPaciente: info.data.idPaciente,
@@ -219,7 +230,7 @@ export class CitasPacienteComponent {
           apellidoMaternoPaciente: info.data.apellidoMaternoPaciente,
           motivo: info.data.motivo,
           fecha: info.data.fecha,
-          hora: info.data.hora,
+          hora: horaFormateada,
           estado: info.data.estado
         });
 
@@ -231,8 +242,6 @@ export class CitasPacienteComponent {
   actualizarCita(id: any) {
 
     this.service.put(`citas/update/${id}`, this.FormularioE.value).subscribe((info: any) => {
-
-      console.log(this.FormularioE.value);
 
       if (info.error == false) {
 
