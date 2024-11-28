@@ -24,6 +24,21 @@
         </label>
     </div>
 
+    <div *ngIf="pacientes.length === 0"
+        class="stats stats-vertical lg:stats-horizontal shadow border-teal-400 border-2 w-11/12 hover:border-teal-700 cursor-pointer my-1">
+        <div class="stat place-items-center">
+            <div class="text-black text-lg font-bold flex justify-center">
+                <div class="mx-2 stat-figure text-secondary">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                        <path
+                            d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z" />
+                    </svg>
+                </div> No tienes pacientes
+            </div>
+            <div class="text-black text-base font-normal">Añadelos con el boton agregar paciente</div>
+        </div>
+    </div>
+
     <div *ngFor="let paciente of pacientes | paginate: { itemsPerPage: perPage, currentPage: page, totalItems: total }"
         class="stats stats-vertical lg:stats-horizontal shadow border-teal-400 border-2 w-11/12 hover:border-teal-700 cursor-pointer my-1">
 
@@ -130,14 +145,16 @@
                     <label class="block text-center text-black">Apellido Paterno</label>
                     <input type="text" class="w-full rounded-md py-2 px-3 flex-auto" placeholder="Apellido Paterno"
                         formControlName="apellidoPaterno">
-                    <p class="font-size: small text-red-600" *ngIf="campoValidoAgregar('apellidoPaterno')">Este campo es
+                    <p class="font-size: small text-red-600" *ngIf="campoValidoAgregar('apellidoPaterno')">Este
+                        campo es
                         requerido</p>
                 </div>
                 <div class="mx-1 w-auto grow">
                     <label class="block text-center text-black">Apellido Materno</label>
                     <input type="text" class="w-full rounded-md py-2 px-3 flex-auto" placeholder="Apellido Materno"
                         formControlName="apellidoMaterno">
-                    <p class="font-size: small text-red-600" *ngIf="campoValidoAgregar('apellidoMaterno')">Este campo es
+                    <p class="font-size: small text-red-600" *ngIf="campoValidoAgregar('apellidoMaterno')">Este
+                        campo es
                         requerido</p>
                 </div>
             </div>
@@ -146,7 +163,8 @@
                 <div class="mx-1 w-auto grow">
                     <label class="block text-center text-black">Fecha nacimiento</label>
                     <input type="date" class="w-full rounded-md py-2 px-3 flex-auto" formControlName="fechaNacimiento">
-                    <p class="font-size: small text-red-600" *ngIf="campoValidoAgregar('fechaNacimiento')">Este campo es
+                    <p class="font-size: small text-red-600" *ngIf="campoValidoAgregar('fechaNacimiento')">Este
+                        campo es
                         requerido</p>
                 </div>
                 <div class="mx-1 w-auto grow">
@@ -197,21 +215,24 @@
                     <label class="block text-center text-black">Nombre</label>
                     <input type="text" class="w-full rounded-md py-2 px-3 flex-auto" placeholder="Nombre"
                         formControlName="nombre">
-                    <p class="font-size: small text-red-600" *ngIf="campoValidoEditar('nombre')">Este campo es requerido
+                    <p class="font-size: small text-red-600" *ngIf="campoValidoEditar('nombre')">Este campo es
+                        requerido
                     </p>
                 </div>
                 <div class="mx-1 w-auto grow">
                     <label class="block text-center text-black">Apellido Paterno</label>
                     <input type="text" class="w-full rounded-md py-2 px-3 flex-auto" placeholder="Apellido Paterno"
                         formControlName="apellidoPaterno">
-                    <p class="font-size: small text-red-600" *ngIf="campoValidoEditar('apellidoPaterno')">Este campo es
+                    <p class="font-size: small text-red-600" *ngIf="campoValidoEditar('apellidoPaterno')">Este campo
+                        es
                         requerido</p>
                 </div>
                 <div class="mx-1 w-auto grow">
                     <label class="block text-center text-black">Apellido Materno</label>
                     <input type="text" class="w-full rounded-md py-2 px-3 flex-auto" placeholder="Apellido Materno"
                         formControlName="apellidoMaterno">
-                    <p class="font-size: small text-red-600" *ngIf="campoValidoEditar('apellidoMaterno')">Este campo es
+                    <p class="font-size: small text-red-600" *ngIf="campoValidoEditar('apellidoMaterno')">Este campo
+                        es
                         requerido</p>
                 </div>
             </div>
@@ -220,7 +241,8 @@
                 <div class="mx-1 w-auto grow">
                     <label class="block text-center text-black">Fecha nacimiento</label>
                     <input type="date" class="w-full rounded-md py-2 px-3 flex-auto" formControlName="fechaNacimiento">
-                    <p class="font-size: small text-red-600" *ngIf="campoValidoEditar('fechaNacimiento')">Este campo es
+                    <p class="font-size: small text-red-600" *ngIf="campoValidoEditar('fechaNacimiento')">Este campo
+                        es
                         requerido</p>
                 </div>
                 <div class="mx-1 w-auto grow">
@@ -234,7 +256,8 @@
                     <label class="block text-center text-black">Correo</label>
                     <input type="email" class="w-full rounded-md py-2 px-3 flex-auto" placeholder="paciente@gmai.com"
                         formControlName="correo">
-                    <p class="font-size: small text-red-600" *ngIf="campoValidoEditar('correo')">Este campo es requerido
+                    <p class="font-size: small text-red-600" *ngIf="campoValidoEditar('correo')">Este campo es
+                        requerido
                     </p>
                 </div>
             </div>
@@ -263,27 +286,34 @@
                     <label class="block text-center text-black">Motivo</label>
                     <input type="text" class="w-full rounded-md py-2 px-3 flex-auto" placeholder="Motivo"
                         formControlName="motivo">
-                    <p class="font-size: small text-red-600" *ngIf="campoValidoCita('motivo')">Este campo es requerido
+                    <p class="font-size: small text-red-600" *ngIf="campoValidoCita('motivo')">Este campo es
+                        requerido
                     </p>
                 </div>
             </div>
 
             <div class="flex flex-row justify-center mt-2">
-                <div class="mx-1 w-1/2">
+                <div class="mx-1 w-full">
                     <label class="block text-center text-black">Fecha</label>
-                    <input type="date" class="w-full rounded-md py-2 px-3 flex-auto" formControlName="fecha">
+                    <input type="date" class="w-full rounded-md py-2 px-3 flex-auto" formControlName="fecha"
+                        (change)="filtradoHora($event)" />
                     <p class="font-size: small text-red-600" *ngIf="campoValidoCita('fecha')">Este campo es requerido
                     </p>
                 </div>
-                <div class="mx-1 w-1/2">
+            </div>
+
+            <div class="flex flex-row justify-center mt-2">
+                <div class="mx-1 w-full">
                     <label class="block text-center text-black">Hora</label>
                     <select class="w-full rounded-md py-2 px-3 flex-auto" formControlName="hora">
                         <option value="" disabled selected>Selecciona una hora</option>
-                        <option *ngFor="let hora of horas" [value]="hora">{{ hora }}</option>
+                        <option *ngFor="let hora of horasDisponiblesFiltradas" [value]="hora">{{ hora }}</option>
                     </select>
                     <p class="font-size: small text-red-600" *ngIf="campoValidoCita('hora')">Este campo es requerido</p>
                 </div>
             </div>
+
+
         </form>
         <div class="modal-action">
             <form method="dialog">

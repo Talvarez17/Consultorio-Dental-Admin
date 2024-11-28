@@ -21,6 +21,7 @@ export class PacientesComponent {
   currentSearch: string = '';
   update = false;
   horas: string[] = [];
+  horasDisponiblesFiltradas: string[] = [];
 
   // --------------------------------------------- Formularios -------------------------------------------------------------------
   FormularioA: FormGroup = this.fb.group({
@@ -52,7 +53,7 @@ export class PacientesComponent {
     apellidoMaternoPaciente: [],
     motivo: [, [Validators.required, Validators.maxLength(50), Validators.minLength(2)]],
     fecha: [, Validators.required],
-    hora: [, Validators.required]
+    hora: [{ value: '', disabled: true }, Validators.required]
   });
 
 
@@ -60,16 +61,8 @@ export class PacientesComponent {
   }
 
   ngOnInit() {
-    this.obtenerPacientes()
-    const inicio = 9;
-    const fin = 19;
-    const intervalo = 15;
-    for (let h = inicio; h <= fin; h++) {
-      for (let m = 0; m < 60; m += intervalo) {
-        const hora = `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`;
-        this.horas.push(hora);
-      }
-    }
+    this.obtenerPacientes();
+    this.horasDisponibles();
   }
 
   //-------------------------------------------- Calculo de la edad del paciente --------------------------------------
@@ -85,6 +78,20 @@ export class PacientesComponent {
 
     return edad;
   }
+
+  horasDisponibles() {
+    const inicio = 9;
+    const fin = 19;
+    const intervalo = 15;
+
+    for (let h = inicio; h <= fin; h++) {
+      for (let m = 0; m < 60; m += intervalo) {
+        const hora = `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`;
+        this.horas.push(hora);
+      }
+    }
+  }
+
 
   //-------------------------------------------- Manejo de los modales editar y cita --------------------------------------
 
@@ -297,6 +304,25 @@ export class PacientesComponent {
     });
 
   }
+
+  filtradoHora(event: Event) {
+    const fechaSeleccionada = (event.target as HTMLInputElement).value;
+
+    this.service.post('citas/horarios', { fecha: fechaSeleccionada }).subscribe((info: any) => {
+
+      if (info.error === false) {
+        const horasOcupadas = info.data.map((item: any) => item.hora.substring(0, 5));
+
+        this.horasDisponiblesFiltradas = this.horas.filter((hora: string) => !horasOcupadas.includes(hora));
+
+        this.FormularioCita.get('hora')?.enable();
+      } else {
+        this.FormularioCita.get('hora')?.disable();
+        this.horasDisponiblesFiltradas = [];
+      }
+    });
+  }
+
 
   //-------------------------------------------- Valdacion de campos --------------------------------------
 

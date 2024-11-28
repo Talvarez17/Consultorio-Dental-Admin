@@ -21,6 +21,8 @@ export class ProximasCitasComponent {
   currentSearch: string = '';
   update = false;
   horas: string[] = [];
+  horasDisponiblesFiltradas: string[] = [];
+  horaSeleccionada: any;
 
   horaActual() {
     const hora = this.date.getHours().toString().padStart(2, '0');
@@ -49,16 +51,8 @@ export class ProximasCitasComponent {
   }
 
   ngOnInit() {
-    this.obtenerCitasProximas()
-    const inicio = 9;
-    const fin = 19;
-    const intervalo = 15;
-    for (let h = inicio; h <= fin; h++) {
-      for (let m = 0; m < 60; m += intervalo) {
-        const hora = `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`;
-        this.horas.push(hora);
-      }
-    }
+    this.obtenerCitasProximas();
+    this.horasDisponibles();
   }
 
   //-------------------------------------------- Formato de la hora y esatus --------------------------------------
@@ -79,6 +73,19 @@ export class ProximasCitasComponent {
         return "Completada";
       default:
         return "Activa";
+    }
+  }
+
+  horasDisponibles() {
+    const inicio = 9;
+    const fin = 19;
+    const intervalo = 15;
+
+    for (let h = inicio; h <= fin; h++) {
+      for (let m = 0; m < 60; m += intervalo) {
+        const hora = `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`;
+        this.horas.push(hora);
+      }
     }
   }
 
@@ -121,9 +128,9 @@ export class ProximasCitasComponent {
 
   obtenerUnaCita(id: any) {
     this.service.get(`citas/getOne/${id}`).subscribe((info: any) => {
-
-      if (info.error == false) {        
+      if (info.error === false) {
         const horaFormateada = info.data.hora.slice(0, 5);
+
         this.FormularioE.patchValue({
           id: info.data.id,
           idPaciente: info.data.idPaciente,
@@ -137,8 +144,11 @@ export class ProximasCitasComponent {
         });
 
         this.citaSola = info.data.id;
+        this.horaSeleccionada = horaFormateada;
+
+        this.filtradoHoraPorFecha(info.data.fecha);
       }
-    })
+    });
   }
 
   actualizarCita(id: any) {
@@ -216,6 +226,35 @@ export class ProximasCitasComponent {
       }
     });
 
+  }
+
+  filtradoHoraPorFecha(fechaSeleccionada: string) {
+    this.service.post('citas/horarios', { fecha: fechaSeleccionada }).subscribe((info: any) => {
+      if (info.error === false) {
+        const horasOcupadas = info.data.map((item: any) => item.hora.substring(0, 5));
+
+        this.horasDisponiblesFiltradas = this.horas.filter(
+          (hora: string) => !horasOcupadas.includes(hora) || hora === this.horaSeleccionada
+        );
+
+        this.FormularioE.get('hora')?.enable();
+      } else {
+        this.horasDisponiblesFiltradas = [];
+        this.FormularioE.get('hora')?.disable();
+      }
+    });
+  }
+
+
+  filtradoHora(event: Event) {
+    const fechaSeleccionada = (event.target as HTMLInputElement).value;
+
+    if (fechaSeleccionada) {
+      this.filtradoHoraPorFecha(fechaSeleccionada);
+    } else {
+      this.horasDisponiblesFiltradas = [];
+      this.FormularioE.get('hora')?.disable();
+    }
   }
 
 
