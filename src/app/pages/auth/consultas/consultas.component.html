@@ -15,7 +15,7 @@
     </div>
 
     <div *ngIf="recetas.length === 0"
-        class="stats stats-vertical lg:stats-horizontal shadow border-teal-400 border-2 w-11/12 hover:border-teal-700 cursor-pointer my-1">
+        class="stats stats-vertical lg:stats-horizontal shadow border-teal-400 border-2 w-11/12 hover:border-teal-700 my-1">
         <div class="stat place-items-center">
             <div class="text-black text-lg font-bold flex justify-center">
                 <div class="mx-2 stat-figure text-secondary">
@@ -30,7 +30,7 @@
     </div>
 
     <div *ngFor="let receta of recetas | paginate: { itemsPerPage: perPage, currentPage: page, totalItems: total }"
-        class="card bg-base-100 w-96 shadow-xl border-teal-400 border-2 hover:border-teal-700 cursor-pointer m-2">
+        class="card bg-base-100 w-96 shadow-xl border-teal-400 border-2 hover:border-teal-700 m-2">
         <div class="card-body">
 
             <h2 class="card-title">{{receta.nombrePaciente}} {{receta.apellidoPaternoPaciente}}

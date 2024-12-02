@@ -25,7 +25,7 @@
     </div>
 
     <div *ngIf="pacientes.length === 0"
-        class="stats stats-vertical lg:stats-horizontal shadow border-teal-400 border-2 w-11/12 hover:border-teal-700 cursor-pointer my-1">
+        class="stats stats-vertical lg:stats-horizontal shadow border-teal-400 border-2 w-11/12 hover:border-teal-700 my-1">
         <div class="stat place-items-center">
             <div class="text-black text-lg font-bold flex justify-center">
                 <div class="mx-2 stat-figure text-secondary">
@@ -40,7 +40,7 @@
     </div>
 
     <div *ngFor="let paciente of pacientes | paginate: { itemsPerPage: perPage, currentPage: page, totalItems: total }"
-        class="stats stats-vertical lg:stats-horizontal shadow border-teal-400 border-2 w-11/12 hover:border-teal-700 cursor-pointer my-1">
+        class="stats stats-vertical lg:stats-horizontal shadow border-teal-400 border-2 w-11/12 hover:border-teal-700 my-1">
 
         <div class="stat place-items-center">
             <div class="text-black text-lg font-bold flex justify-center">
