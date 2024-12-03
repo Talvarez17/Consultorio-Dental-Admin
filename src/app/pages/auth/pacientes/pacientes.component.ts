@@ -28,7 +28,7 @@ export class PacientesComponent {
     _id: this.uudi,
     nombre: [, [Validators.required, Validators.maxLength(50), Validators.minLength(2)]],
     apellidoPaterno: [, [Validators.required, Validators.maxLength(50), Validators.minLength(2)]],
-    apellidoMaterno: [, [Validators.required, Validators.maxLength(50), Validators.minLength(2)]],
+    apellidoMaterno: [''],
     fechaNacimiento: [, Validators.required],
     telefono: [, [Validators.required, Validators.maxLength(10), Validators.minLength(10), Validators.pattern(/^\d{10}$/)]],
     correo: [, [Validators.required, Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)]],
@@ -39,7 +39,7 @@ export class PacientesComponent {
     id: [],
     nombre: [, [Validators.required, Validators.maxLength(50), Validators.minLength(2)]],
     apellidoPaterno: [, [Validators.required, Validators.maxLength(50), Validators.minLength(2)]],
-    apellidoMaterno: [, [Validators.required, Validators.maxLength(50), Validators.minLength(2)]],
+    apellidoMaterno: [''],
     fechaNacimiento: [, Validators.required],
     telefono: [, [Validators.required, Validators.maxLength(10), Validators.minLength(10), Validators.pattern(/^\d{10}$/)]],
     correo: [, [Validators.required, Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)]]
@@ -151,13 +151,13 @@ export class PacientesComponent {
 
   obtenerUnPaciente(id: any) {
     this.service.get(`paciente/getOne/${id}`).subscribe((info: any) => {
-
+      
       if (info.error == false) {
         this.FormularioE.patchValue({
           id: info.data.id,
           nombre: info.data.nombre,
           apellidoPaterno: info.data.apellidoPaterno,
-          apellidoMaterno: info.data.apellidoMaterno,
+          apellidoMaterno: info.data.apellidoMaterno == null ? '' : info.data.apellidoPaterno ,
           fechaNacimiento: info.data.fechaNacimiento,
           telefono: info.data.telefono,
           correo: info.data.correo
@@ -202,6 +202,9 @@ export class PacientesComponent {
   agregarPaciente() {
 
     this.service.post('paciente/insert', this.FormularioA.value).subscribe((info: any) => {
+
+      console.log(info);
+      
 
       if (info.error == false) {
         this.FormularioA.reset();

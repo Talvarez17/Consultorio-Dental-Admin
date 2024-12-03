@@ -153,9 +153,6 @@
                     <label class="block text-center text-black">Apellido Materno</label>
                     <input type="text" class="w-full rounded-md py-2 px-3 flex-auto" placeholder="Apellido Materno"
                         formControlName="apellidoMaterno">
-                    <p class="font-size: small text-red-600" *ngIf="campoValidoAgregar('apellidoMaterno')">Este
-                        campo es
-                        requerido</p>
                 </div>
             </div>
 
@@ -183,7 +180,7 @@
                 </div>
                 <div class="mx-1 w-auto grow">
                     <label class="block text-center text-black">Contraseña</label>
-                    <input type="text" class="w-full rounded-md py-2 px-3 flex-auto" placeholder="Contraseña"
+                    <input type="password" class="w-full rounded-md py-2 px-3 flex-auto" placeholder="Contraseña"
                         formControlName="contrasenia">
                     <p class="font-size: small text-red-600" *ngIf="campoValidoAgregar('contrasenia')">Este campo es
                         requerido
@@ -231,9 +228,6 @@
                     <label class="block text-center text-black">Apellido Materno</label>
                     <input type="text" class="w-full rounded-md py-2 px-3 flex-auto" placeholder="Apellido Materno"
                         formControlName="apellidoMaterno">
-                    <p class="font-size: small text-red-600" *ngIf="campoValidoEditar('apellidoMaterno')">Este campo
-                        es
-                        requerido</p>
                 </div>
             </div>
 
